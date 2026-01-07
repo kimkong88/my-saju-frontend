@@ -28,8 +28,8 @@ export default function IntroductionSection() {
                         mountain in the middle of a desert. While other kids
                         were like fast-moving streams or fluttering leaves, you
                         possessed a natural gravity. You were the observer. You
-                        noticed everything but didn't always feel the need to
-                        shout. You felt older than you actually were.
+                        noticed everything but didn&apos;t always feel the need
+                        to shout. You felt older than you actually were.
                         <br />
                         <br />
                         We will break down your early chapter into 3 key

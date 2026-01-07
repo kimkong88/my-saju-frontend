@@ -59,9 +59,9 @@ export default function DataDrivenModal() {
                                     </h4>
                                     <p className="text-sm text-slate-800 font-medium leading-snug">
                                         The algorithm identifies the statistical
-                                        "resonance" between your birth DNA and
-                                        current cycles, removing the guesswork
-                                        from strategic timing.
+                                        &quot;resonance&quot; between your birth
+                                        DNA and current cycles, removing the
+                                        guesswork from strategic timing.
                                     </p>
                                 </div>
                             </div>

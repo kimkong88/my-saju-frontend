@@ -37,11 +37,11 @@ export default function VibeCheckSection() {
                     internal landscape was remarkably still. From 1988 to 2005,
                     you existed as a mountain sitting under a persistent,
                     high-noon sun. You weren’t just growing up; you were
-                    undergoing a process of 'Structural Hardening.' You spent
-                    these years as a silent architect—observing the world with a
-                    'No-BS' meter that was already fully calibrated, building a
-                    foundation strong enough to eventually house the fire of
-                    your ambitions
+                    undergoing a process of &quot;Structural Hardening.&quot;
+                    You spent these years as a silent architect—observing the
+                    world with a &quot;No-BS&quot; meter that was already fully
+                    calibrated, building a foundation strong enough to
+                    eventually house the fire of your ambitions
                 </div>
                 <div className="flex flex-col gap-4">
                     {SAMPLE_VIBE_CHECK.map((item, index) => (

@@ -94,9 +94,10 @@ export default function CompatibilitySection() {
                 </div>
 
                 <p className="text-sm sm:text-base text-slate-500 italic max-w-lg mx-auto leading-relaxed px-4">
-                    "Highly compatible alignment. Your partner's core energy
-                    naturally offsets your blind spots, creating a synergy that
-                    drives both personal and professional momentum."
+                    &quot;Highly compatible alignment. Your partner&apos;s core
+                    energy naturally offsets your blind spots, creating a
+                    synergy that drives both personal and professional
+                    momentum.&quot;
                 </p>
             </div>
         </section>

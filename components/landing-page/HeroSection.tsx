@@ -16,8 +16,8 @@ export default function HeroSection() {
                     </span>
                 </h1>
                 <div className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-500 mb-10 sm:mb-12 md:mb-14 max-w-4xl mx-auto leading-relaxed font-light px-2 sm:px-0">
-                    The first temporal engine built to decode your life's logic.
-                    Powered by{" "}
+                    The first temporal engine built to decode your life&apos;s
+                    logic. Powered by{" "}
                     <span className="inline-modal-wrapper">
                         <SajuModal />
                     </span>

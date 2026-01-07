@@ -1,7 +1,6 @@
 "use client";
 
 import { Button, Modal } from "@heroui/react";
-import { Info } from "lucide-react";
 
 export default function DefaultModal({
     trigger,

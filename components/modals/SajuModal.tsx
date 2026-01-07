@@ -99,7 +99,7 @@ export default function SajuModal() {
                                     The Goal
                                 </h4>
                                 <p className="text-sm text-slate-500 leading-snug">
-                                    This isn't about fate—it's about{" "}
+                                    This isn&apos;t about fate—it&apos;s about{" "}
                                     <span className="text-slate-900 font-semibold underline decoration-slate-200 underline-offset-4">
                                         optimizing your trajectory
                                     </span>

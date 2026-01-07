@@ -1,5 +1,4 @@
 import HeroSection from "@/components/landing-page/HeroSection";
-import TeaserSection from "@/components/landing-page/TeaserSection";
 import ResponsiveLayout from "@/components/layout/ResponsiveLayout";
 import SignatureSection from "@/components/landing-page/SignatureSection";
 import DecipherSection from "@/components/landing-page/DecipherSection";

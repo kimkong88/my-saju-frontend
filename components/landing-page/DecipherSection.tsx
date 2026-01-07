@@ -14,8 +14,8 @@ export default function DecipherSection() {
                         <span className="inline-modal-wrapper">
                             <SajuModal />
                         </span>{" "}
-                        is not a static test; it's a dynamic map of time. Our
-                        engine calculates the interaction between your birth
+                        is not a static test; it&apos;s a dynamic map of time.
+                        Our engine calculates the interaction between your birth
                         data and current temporal cycles to provide
                         high-precision forecasting.
                     </div>
@@ -153,9 +153,9 @@ export default function DecipherSection() {
                                 Alert
                             </p>
                             <p className="text-xs sm:text-sm md:text-lg font-bold leading-tight">
-                                "Internal energy is peaking. A perfect day for
-                                strategy and refining details rather than new
-                                launches."
+                                &quot;Internal energy is peaking. A perfect day
+                                for strategy and refining details rather than
+                                new launches.&quot;
                             </p>
                         </div>
                     </div>
