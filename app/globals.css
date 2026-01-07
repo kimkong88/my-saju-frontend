@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@heroui/styles"; 
 
 :root {
   --background: #ffffff;
@@ -8,8 +9,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,8 +19,174 @@
   }
 }
 
+@layer components {
+  .button--primary {
+    @apply bg-black hover:bg-slate-800 transition-colors text-white;
+  }
+  .button--effect {
+    @apply transition-all duration-200 hover:scale-102 hover:shadow-lg;
+  }
+  
+  .dna-container {
+    @apply relative cursor-pointer;
+    min-height: 400px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dna-container:hover {
+    transform: scale(1.08);
+  }
+
+  .dna-container:hover .dna-ring-outer {
+    filter: drop-shadow(0 4px 12px rgba(100, 116, 139, 0.3));
+  }
+
+  .dna-container:hover .dna-ring-inner {
+    filter: drop-shadow(0 2px 8px rgba(100, 116, 139, 0.25));
+    /* Keep original animation speed - no animation-duration change */
+  }
+
+  .dna-container:hover .vector-tag {
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  }
+
+  .dna-container:hover .dna-center-circle {
+    box-shadow: 0 0 30px rgba(100, 116, 139, 0.4), 0 0 60px rgba(100, 116, 139, 0.2);
+    transform: scale(1.05);
+  }
+
+  .dna-center-circle {
+    transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .dna-ring {
+    @apply absolute top-1/2 left-1/2;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    transition: filter 0.4s ease, animation-duration 0.4s ease;
+  }
+  
+  .dna-ring-outer {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+    transition: filter 0.4s ease, animation-duration 0.4s ease;
+  }
+  
+  .dna-ring-inner {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.03));
+    transition: filter 0.4s ease;
+    /* No animation-duration transition - stays at 20s */
+  }
+  
+  .vector-tag {
+    @apply bg-slate-900 text-white;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  
+  .vector-tag:hover {
+    @apply bg-slate-800;
+    transform: scale(1.05);
+  }
+
+  /* Ensure modal triggers render inline */
+  .inline-modal-wrapper {
+    display: inline;
+  }
+
+  .inline-modal-wrapper > * {
+    display: inline !important;
+  }
+
+  .inline-modal-wrapper [role="button"],
+  .inline-modal-wrapper button,
+  .inline-modal-wrapper span {
+    display: inline !important;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+  transform-origin: center center;
+}
+
+.dna-container:hover .dna-ring-outer.animate-spin-slow {
+  animation: spin-slow 8s linear infinite !important;
+}
+
+@keyframes light-pass {
+  0% {
+    stroke-dasharray: 100 500;
+    stroke-dashoffset: 600;
+    opacity: 0;
+  }
+  0.3% {
+    opacity: 1;
+  }
+  99.7% {
+    stroke-dasharray: 100 500;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 100 500;
+    stroke-dashoffset: 600;
+    opacity: 0;
+  }
+}
+
+.forecast-card {
+  cursor: pointer;
+}
+
+.forecast-light {
+  opacity: 0;
+  stroke-dasharray: 100 500;
+  stroke-dashoffset: 600;
+}
+
+.forecast-card:hover .forecast-light {
+  animation: light-pass 1.2s linear infinite;
+  filter: url(#glow);
+}
+
+.forecast-line {
+  stroke-dasharray: none !important;
+  stroke-dashoffset: 0 !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* 80px for desktop header */
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 4rem; /* 64px for mobile header */
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', sans-serif;
 }
