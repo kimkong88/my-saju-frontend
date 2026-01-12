@@ -17,8 +17,8 @@ const libre = Libre_Baskerville({
 });
 
 export const metadata: Metadata = {
-    title: "MySaju - Decode Your Time DNA",
-    description: "MySaju is a first temporal ...",
+    title: "Chronax - Decode Your Time DNA",
+    description: "Chronax is a first temporal ...",
 };
 
 export default function RootLayout({

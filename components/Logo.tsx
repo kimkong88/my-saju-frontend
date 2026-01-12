@@ -6,7 +6,7 @@ export default function Logo() {
                     <div className="w-3 md:w-4 h-3 md:h-4 border-2 border-white rounded-full"></div>
                 </div>
                 <span className="font-bold text-xl md:text-2xl tracking-tight">
-                    Chrony
+                    Chronax
                 </span>
             </div>
         </>
