@@ -44,7 +44,7 @@ export default function HeroSection() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pointer-events-auto">
                     <a
                         href="#teaser"
-                        className="button--effect px-8 sm:px-10 py-4 sm:py-5 rounded-full font-semibold text-base sm:text-lg hover:border-white text-slate-900 w-full sm:w-auto text-center transition-colors order-2 sm:order-1 bg-white/80 backdrop-blur-sm"
+                        className="border border-slate-900/5 button--effect px-8 sm:px-10 py-4 sm:py-5 rounded-full font-semibold text-base sm:text-lg hover:border-white text-slate-900 w-full sm:w-auto text-center transition-colors order-2 sm:order-1 bg-white/80 backdrop-blur-sm"
                     >
                         Try Teaser
                     </a>
