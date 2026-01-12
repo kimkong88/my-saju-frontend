@@ -13,6 +13,7 @@ export default function Home() {
                 afterTeaserSection={
                     <>
                         <SignatureSection />
+                        <div className="border-t border-slate-900/5" />
                         <ResponsiveLayout>
                             <DecipherSection />
                         </ResponsiveLayout>

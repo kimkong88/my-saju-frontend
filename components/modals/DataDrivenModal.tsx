@@ -1,12 +1,18 @@
 import { Modal } from "@heroui/react";
 import DefaultModal from "./DefaultModal";
 
-export default function DataDrivenModal() {
+export default function DataDrivenModal({
+    textColor = "text-slate-900",
+}: {
+    textColor?: string;
+}) {
     return (
         <DefaultModal
             trigger={
                 <Modal.Trigger>
-                    <span className="text-slate-900 font-bold underline cursor-pointer">
+                    <span
+                        className={`${textColor} font-bold underline cursor-pointer`}
+                    >
                         driven by data.
                     </span>
                 </Modal.Trigger>

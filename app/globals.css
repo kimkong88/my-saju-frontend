@@ -9,7 +9,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
+  --font-serif: var(--font-serif);
+  --font-inter: var(--font-inter);
 }
 
 @layer components {
@@ -181,5 +182,41 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-serif), serif;
+}
+
+.fire-i-bg {
+  background: linear-gradient(135deg, #1a1f35 0%, #3d2817 100%);
+}
+
+.gradient-circle {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 140, 0, 0.3) 0%,    /* Warm orange glow */
+    rgba(255, 69, 0, 0.15) 40%,
+    transparent 70%
+  );
+  filter: blur(40px);
+}
+
+.hero-image-container {
+  position: relative;
+  width: 400px;
+  height: 400px;
+}
+
+.bg-noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.05; /* Adjust visibility here */
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
 }

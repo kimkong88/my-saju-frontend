@@ -3,12 +3,18 @@
 import { Modal } from "@heroui/react";
 import DefaultModal from "./DefaultModal";
 
-export default function SajuModal() {
+export default function SajuModal({
+    textColor = "text-slate-900",
+}: {
+    textColor?: string;
+}) {
     return (
         <DefaultModal
             trigger={
                 <Modal.Trigger>
-                    <span className="text-slate-900 font-bold underline cursor-pointer">
+                    <span
+                        className={`${textColor} font-bold underline cursor-pointer`}
+                    >
                         Saju(Bazi)
                     </span>
                 </Modal.Trigger>

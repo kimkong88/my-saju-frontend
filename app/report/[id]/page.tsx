@@ -3,7 +3,7 @@ import ResponsiveLayout from "@/components/layout/ResponsiveLayout";
 import CheatSheetSection from "@/components/report-page/CheatSheetSection";
 import HeroSection from "@/components/report-page/HeroSection";
 import IntroductionSection from "@/components/report-page/IntroductionSection";
-import TakeawaySection from "@/components/report-page/TakeawaySection";
+import TakeawaySection from "@/components/report-page/NextSection";
 import TurningPointSection from "@/components/report-page/TurningPointSection";
 import VibeCheckSection from "@/components/report-page/VibeCheckSection";
 

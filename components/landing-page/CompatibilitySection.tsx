@@ -1,104 +1,156 @@
+import { Fragment } from "react";
+
 export default function CompatibilitySection() {
     return (
         <section
             id="compatibility"
-            className="py-16 md:py-32 px-6 xl:px-0 bg-slate-50 border-y border-slate-100"
+            className="py-24 md:py-40 px-6 xl:px-0 bg-transparent border-t border-slate-900/5"
         >
             <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 md:mb-6 tracking-tighter leading-none">
-                    Relationship Compatibility
+                {/* Header */}
+                <h2 className="font-serif text-4xl md:text-6xl text-slate-900 mb-6 leading-tight">
+                    Relationship{" "}
+                    <span className="italic text-slate-500">Resonance</span>.
                 </h2>
-                <p className="text-left text-base sm:text-lg md:text-xl text-slate-500 mb-8 md:mb-16 max-w-2xl mx-auto">
+                <p className="text-sm md:text-base text-slate-700 mb-16 max-w-xl mx-auto leading-relaxed">
                     Analyze the compatibility of your relationships. Whether
-                    personal or professional, decode the logic of connection.
+                    personal or professional, we decode the{" "}
+                    <strong className="text-slate-900 font-medium">
+                        logic of connection
+                    </strong>{" "}
+                    between two signatures.
                 </p>
 
-                <div className="flex flex-row items-center justify-center gap-3 sm:gap-6 md:gap-12 mb-12 md:mb-20">
-                    <div className="flex flex-col items-center">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-slate-100 border border-slate-200 shadow-lg flex items-center justify-center transition-transform duration-300 ease-out cursor-pointer hover:scale-110">
-                            <span className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold">
+                {/* --- THE SYNASTRY GRAPHIC (Venn Diagram Style) --- */}
+                <div className="relative w-full max-w-lg mx-auto aspect-[4/3] md:aspect-[16/9] mb-12 flex items-center justify-center select-none">
+                    {/* SVG Graphic */}
+                    <svg viewBox="0 0 400 250" className="w-full h-full">
+                        <defs>
+                            <pattern
+                                id="diagonalHatch"
+                                width="4"
+                                height="4"
+                                patternUnits="userSpaceOnUse"
+                                patternTransform="rotate(45)"
+                            >
+                                <rect
+                                    width="2"
+                                    height="4"
+                                    transform="translate(0,0)"
+                                    fill="#0f172a"
+                                    opacity="0.15"
+                                />
+                            </pattern>
+                        </defs>
+
+                        {/* GEOMETRY CALCULATION:
+                           Centers: (140, 125) and (260, 125). Distance = 120.
+                           Radius: 90.
+                           Intersection math: Two circles of radius R separated by distance D intersect.
+                           The overlap shape is formed by two arcs.
+                           
+                           This refined path perfectly traces the overlap area.
+                        */}
+
+                        {/* Subject A (Left Circle) */}
+                        <circle
+                            cx="140"
+                            cy="125"
+                            r="90"
+                            fill="none"
+                            stroke="#0f172a"
+                            strokeWidth="0.8"
+                            className="opacity-60"
+                        />
+
+                        {/* Subject B (Right Circle) */}
+                        <circle
+                            cx="260"
+                            cy="125"
+                            r="90"
+                            fill="none"
+                            stroke="#0f172a"
+                            strokeWidth="0.8"
+                            strokeDasharray="4 4"
+                            className="opacity-60"
+                        />
+
+                        {/* FIXED INTERSECTION PATH:
+                           Move to top intersection, Arc to bottom intersection, Arc back to top.
+                        */}
+                        <path
+                            d="M 200,57.9 A 90,90 0 0,0 200,192.1 A 90,90 0 0,0 200,57.9"
+                            fill="url(#diagonalHatch)"
+                            stroke="none"
+                        />
+
+                        {/* Connection Line */}
+                        <line
+                            x1="140"
+                            y1="125"
+                            x2="260"
+                            y2="125"
+                            stroke="#0f172a"
+                            strokeWidth="0.5"
+                            opacity="0.1"
+                            strokeDasharray="2 2"
+                        />
+
+                        {/* Anchor Dots */}
+                        <circle cx="140" cy="125" r="2" fill="#0f172a" />
+                        <circle cx="260" cy="125" r="2" fill="#0f172a" />
+                    </svg>
+
+                    {/* Overlay Content */}
+                    <div className="absolute inset-0">
+                        {/* Subject A Label */}
+                        <div className="absolute top-1/2 left-[15%] md:left-[20%] -translate-y-1/2 -translate-x-1/2 text-center">
+                            <span className="block font-serif italic text-2xl md:text-3xl text-slate-900">
                                 You
                             </span>
                         </div>
-                    </div>
 
-                    <div className="relative">
-                        <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-full border-4 sm:border-6 md:border-8 border-slate-50 flex items-center justify-center transition-transform duration-300 ease-out cursor-pointer hover:scale-110">
-                            <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black">
-                                94%
+                        {/* Subject B Label */}
+                        <div className="absolute top-1/2 right-[15%] md:right-[20%] -translate-y-1/2 translate-x-1/2 text-center">
+                            <span className="block font-serif italic text-2xl md:text-3xl text-slate-900">
+                                Partner
                             </span>
                         </div>
-                        {/* Mobile SVG */}
-                        <svg
-                            className="absolute inset-0 w-full h-full -rotate-90 md:hidden"
-                            viewBox="0 0 80 80"
-                        >
-                            <circle
-                                cx="40"
-                                cy="40"
-                                r="36"
-                                fill="none"
-                                stroke="#0f172a"
-                                strokeWidth="4"
-                                strokeDasharray="226"
-                                strokeDashoffset="13.6"
-                                strokeLinecap="round"
-                            />
-                        </svg>
-                        {/* Tablet SVG */}
-                        <svg
-                            className="absolute inset-0 w-full h-full -rotate-90 hidden md:block lg:hidden"
-                            viewBox="0 0 96 96"
-                        >
-                            <circle
-                                cx="48"
-                                cy="48"
-                                r="44"
-                                fill="none"
-                                stroke="#0f172a"
-                                strokeWidth="6"
-                                strokeDasharray="276"
-                                strokeDashoffset="16.6"
-                                strokeLinecap="round"
-                            />
-                        </svg>
-                        {/* Desktop SVG */}
-                        <svg
-                            className="absolute inset-0 w-full h-full -rotate-90 hidden lg:block"
-                            viewBox="0 0 128 128"
-                        >
-                            <circle
-                                cx="64"
-                                cy="64"
-                                r="56"
-                                fill="none"
-                                stroke="#0f172a"
-                                strokeWidth="8"
-                                strokeDasharray="351.8"
-                                strokeDashoffset="21"
-                                strokeLinecap="round"
-                            />
-                        </svg>
-                        <span className="absolute -bottom-4 sm:-bottom-5 md:-bottom-6 left-1/2 -translate-x-1/2 text-[9px] sm:text-[10px] md:text-xs font-bold bg-emerald-100 text-emerald-700 px-2 sm:px-3 md:px-4 py-0.5 sm:py-1 rounded-full whitespace-nowrap">
-                            High Synergy
-                        </span>
-                    </div>
 
-                    <div className="flex flex-col items-center">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-slate-900 text-white shadow-lg flex items-center justify-center transition-transform duration-300 ease-out cursor-pointer hover:scale-110">
-                            <span className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold">
-                                Partner
+                        {/* The Score (Center) - Floating Badge */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center bg-white shadow-sm px-5 py-3 rounded-full border border-slate-100">
+                            <span className="block font-serif text-3xl md:text-5xl text-slate-900 leading-none">
+                                94
+                                <span className="text-sm md:text-xl align-top ml-0.5 opacity-50">
+                                    %
+                                </span>
                             </span>
                         </div>
                     </div>
                 </div>
 
-                <p className="text-sm sm:text-base text-slate-500 italic max-w-lg mx-auto leading-relaxed px-4">
-                    &quot;Highly compatible alignment. Your partner&apos;s core
-                    energy naturally offsets your blind spots, creating a
-                    synergy that drives both personal and professional
-                    momentum.&quot;
-                </p>
+                {/* --- ANALYSIS FOOTER --- */}
+                <div className="border-t border-b border-slate-200 py-8 max-w-2xl mx-auto">
+                    <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 text-center md:text-left">
+                        <div className="flex-shrink-0">
+                            <div className="w-12 h-12 border border-slate-900 flex items-center justify-center rounded-full">
+                                <span className="font-serif italic font-bold">
+                                    A+
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <p className="font-mono text-[9px] text-slate-400 uppercase tracking-widest mb-2">
+                                Analysis Result
+                            </p>
+                            <p className="font-serif italic text-slate-800 text-lg leading-relaxed">
+                                "A rare geometric alignment. Partner's core
+                                energy naturally offsets your blind spots,
+                                creating a self-sustaining momentum."
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     );

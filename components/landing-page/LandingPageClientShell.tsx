@@ -13,6 +13,7 @@ export default function LandingPageClientShell({
     return (
         <>
             {children}
+            <div className="border-t border-slate-900/5"></div>
             <ResponsiveLayout>
                 <TeaserSection />
             </ResponsiveLayout>

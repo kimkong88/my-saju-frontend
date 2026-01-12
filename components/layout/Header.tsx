@@ -17,7 +17,7 @@ export default function Header() {
     };
     return (
         <header className="fixed top-0 left-0 right-0 w-full z-[100]">
-            <nav className="w-full bg-white/60 backdrop-blur-md border-b border-slate-200/50">
+            <nav className="w-full bg-white backdrop-blur-md border-b border-slate-200/50">
                 <div className="max-w-7xl mx-auto px-6 xl:px-0 h-16 md:h-20 flex items-center justify-between">
                     <Link href="/" onClick={handleLogoClick}>
                         <Logo />
