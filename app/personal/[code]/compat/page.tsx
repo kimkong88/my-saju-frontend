@@ -40,5 +40,9 @@ export default async function CompatibilityPage({
     const report = response.data;
     const input = response.input;
 
+    if (!input) {
+        notFound();
+    }
+
     return <CompatibilityForm report={report} input={input} />;
 }
