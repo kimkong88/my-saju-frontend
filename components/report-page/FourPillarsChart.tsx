@@ -1,12 +1,9 @@
+import type { FourPillars } from "@/types/report";
+
 export default function FourPillarsChart({
     fourPillars,
 }: {
-    fourPillars: {
-        year: { display: string; meaning: string; aspect: string };
-        month: { display: string; meaning: string; aspect: string };
-        day: { display: string; meaning: string; aspect: string; isCore?: boolean };
-        hour: { display: string; meaning: string; aspect: string };
-    };
+    fourPillars: FourPillars;
 }) {
     const pillars = [
         { key: "year", label: "Year", data: fourPillars.year },

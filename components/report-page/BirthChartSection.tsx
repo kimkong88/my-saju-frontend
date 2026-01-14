@@ -1,5 +1,6 @@
 import type {
     FourPillars,
+    FourPillar,
     ElementDistribution,
     Identity,
     Rarity,
@@ -158,28 +159,34 @@ export default function BirthChartSection({
                                 </div>
 
                                 <div className="space-y-4 flex-1">
-                                    {[
-                                        {
-                                            key: "year",
-                                            label: "Year",
-                                            data: fourPillars.year,
-                                        },
-                                        {
-                                            key: "month",
-                                            label: "Month",
-                                            data: fourPillars.month,
-                                        },
-                                        {
-                                            key: "day",
-                                            label: "Day",
-                                            data: fourPillars.day,
-                                        },
-                                        {
-                                            key: "hour",
-                                            label: "Hour",
-                                            data: fourPillars.hour,
-                                        },
-                                    ].map((pillar) => {
+                                    {(
+                                        [
+                                            {
+                                                key: "year",
+                                                label: "Year",
+                                                data: fourPillars.year,
+                                            },
+                                            {
+                                                key: "month",
+                                                label: "Month",
+                                                data: fourPillars.month,
+                                            },
+                                            {
+                                                key: "day",
+                                                label: "Day",
+                                                data: fourPillars.day,
+                                            },
+                                            {
+                                                key: "hour",
+                                                label: "Hour",
+                                                data: fourPillars.hour,
+                                            },
+                                        ] as Array<{
+                                            key: string;
+                                            label: string;
+                                            data: FourPillar;
+                                        }>
+                                    ).map((pillar) => {
                                         const isCore = pillar.data.isCore;
                                         return (
                                             <div
