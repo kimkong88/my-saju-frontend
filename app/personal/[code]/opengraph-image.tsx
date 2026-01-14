@@ -1,6 +1,7 @@
 import { getReport } from "@/app/actions/reportAction";
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
+import type { PersonalReport } from "@/types/report";
 
 // Route segment config
 export const runtime = "edge";
@@ -40,12 +41,13 @@ export default async function Image({
 }) {
     const { code } = await params;
 
-    const report = await getReport(code);
+    const response = await getReport(code);
 
-    if (!report || report.type !== "personal") {
+    if (!response || response.type !== "personal") {
         notFound();
     }
 
+    const report = response.data as PersonalReport;
     const fontData = await loadFont();
 
     const identity = report.identity;
