@@ -30,10 +30,10 @@ export default function CompatibilityPrompt({
                                 Check Compatibility
                             </Link>
                             <Link
-                                href="/signup"
+                                href="#next"
                                 className="flex-1 sm:flex-initial inline-flex items-center justify-center px-8 py-4 border-2 border-slate-900 text-slate-900 rounded-full hover:bg-slate-50 transition-all duration-200 button--effect text-base font-medium"
                             >
-                                Sign Up to Save Results
+                                Explore More Features
                             </Link>
                         </div>
                     </div>
