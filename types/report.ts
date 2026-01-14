@@ -190,6 +190,7 @@ export interface ReportInput {
     gender: string;
     birthDateTime: string;
     birthTimezone: string;
+    birthCity?: string;
     isTimeKnown: boolean;
 }
 

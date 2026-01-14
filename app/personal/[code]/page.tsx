@@ -1,10 +1,12 @@
 import ResponsiveLayout from "@/components/layout/ResponsiveLayout";
 import ReportNavigation from "@/components/report-page/ReportNavigation";
 import HeroSection from "@/components/report-page/HeroSection";
+import AccuracyAlert from "@/components/report-page/AccuracyAlert";
 import BirthChartSection from "@/components/report-page/BirthChartSection";
 import IntroductionSection from "@/components/report-page/IntroductionSection";
 import NextSection from "@/components/report-page/NextSection";
 import WhoYouAreSection from "@/components/report-page/WhoYouAreSection";
+import CompatibilityPrompt from "@/components/report-page/CompatibilityPrompt";
 import StrengthSection from "@/components/report-page/StrengthSection";
 import WeaknessSection from "@/components/report-page/WeaknessSection";
 import LifeSection from "@/components/report-page/LifeSection";
@@ -83,11 +85,18 @@ export default async function Page({
     }
 
     const report = response.data;
+    const input = response.input;
 
     return (
         <div className="pb-20 xl:pb-0">
             <ReportNavigation />
             <HeroSection identity={report.identity} rarity={report.rarity} />
+            {/* Accuracy Alert - Before first content section */}
+            <div className="px-6 xl:px-0 py-8">
+                <div className="max-w-7xl mx-auto">
+                    <AccuracyAlert input={input} />
+                </div>
+            </div>
             <BirthChartSection
                 fourPillars={report.technicalBasis.fourPillars}
                 elementDistribution={report.elementDistribution}
@@ -105,6 +114,7 @@ export default async function Page({
                     specialTraits={report.specialTraits}
                 />
             </ResponsiveLayout>
+            <CompatibilityPrompt reportCode={code} />
             <StrengthSection strengths={report.strengths} />
             <WeaknessSection weaknesses={report.weaknesses} />
             <LifeSection lifeThemes={report.lifeThemes} />
