@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
     DateField,
     DateInputGroup,
@@ -11,6 +13,8 @@ import {
     Surface,
     TimeField,
 } from "@heroui/react";
+import { createPersonalReport } from "@/app/actions/reportAction";
+import { createBirthDateTime } from "@/lib/utils/date";
 
 // Simple Chevron Icon for perfect alignment
 const ChevronDownIcon = ({ className }: { className?: string }) => (
@@ -32,16 +36,51 @@ const ChevronDownIcon = ({ className }: { className?: string }) => (
 );
 
 export default function TeaserSection() {
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const router = useRouter();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const data: Record<string, string> = {};
+        setIsSubmitting(true);
 
-        formData.forEach((value, key) => {
-            data[key] = value.toString();
-        });
+        try {
+            const formData = new FormData(e.currentTarget);
+            const data: Record<string, string> = {};
 
-        console.log("Form submitted:", data);
+            formData.forEach((value, key) => {
+                data[key] = value.toString();
+            });
+
+            const birthDate = data.birthDate;
+            const birthTime = data.birthTime || "";
+            const isTimeKnown = Boolean(birthTime && birthTime.trim() !== "");
+
+            // Create birthDateTime, stripping timezone and handling missing time
+            const birthDateTime = createBirthDateTime(birthDate, birthTime);
+
+            // Get user's timezone (browser default)
+            const birthTimezone =
+                Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+            const payload = {
+                birthDateTime,
+                gender: data.gender as "male" | "female",
+                birthTimezone: birthTimezone,
+                isTimeKnown,
+            };
+
+            // Call API to create report
+            const result = await createPersonalReport(payload);
+
+            // Redirect to the report page with the code
+            // Assuming the API returns a code or id
+            const reportCode = result.code || result.id;
+            router.push(`/personal/${reportCode}`);
+        } catch (error) {
+            console.error("Error creating report:", error);
+            // TODO: Add error handling/display to user
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -59,8 +98,7 @@ export default function TeaserSection() {
                         <strong className="text-slate-900 font-semibold">
                             One in 10.3 million
                         </strong>{" "}
-                        probability signatures.{" "}
-                        <br className="hidden sm:block" />
+                        unique combinations. <br className="hidden sm:block" />
                         Input your birth data to locate{" "}
                         <strong className="text-slate-900 font-semibold">
                             yours
@@ -190,11 +228,14 @@ export default function TeaserSection() {
                         <div className="pt-8">
                             <button
                                 type="submit"
-                                className="cursor-pointer group relative inline-flex items-center justify-center px-10 py-4 overflow-hidden font-serif font-medium tracking-tighter text-white bg-slate-900 rounded-full transition duration-300 ease-out hover:scale-105 hover:shadow-2xl"
+                                disabled={isSubmitting}
+                                className="cursor-pointer group relative inline-flex items-center justify-center px-10 py-4 overflow-hidden font-serif font-medium tracking-tighter text-white bg-slate-900 rounded-full transition duration-300 ease-out hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-slate-800 via-slate-900 to-black opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                                 <span className="relative flex items-center gap-3 text-lg">
-                                    Calculate Analysis
+                                    {isSubmitting
+                                        ? "Calculating..."
+                                        : "Calculate Analysis"}
                                 </span>
                             </button>
                             <p className="mt-6 text-[10px] uppercase tracking-widest text-slate-400">

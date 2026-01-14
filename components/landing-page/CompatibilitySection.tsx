@@ -1,5 +1,3 @@
-import { Fragment } from "react";
-
 export default function CompatibilitySection() {
     return (
         <section
@@ -144,9 +142,9 @@ export default function CompatibilitySection() {
                                 Analysis Result
                             </p>
                             <p className="font-serif italic text-slate-800 text-lg leading-relaxed">
-                                "A rare geometric alignment. Partner's core
-                                energy naturally offsets your blind spots,
-                                creating a self-sustaining momentum."
+                                &quot;A rare geometric alignment. Partner&apos;s
+                                core energy naturally offsets your blind spots,
+                                creating a self-sustaining momentum.&quot;
                             </p>
                         </div>
                     </div>

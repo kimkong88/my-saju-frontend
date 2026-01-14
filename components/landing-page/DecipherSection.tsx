@@ -1,5 +1,3 @@
-import SajuModal from "../modals/SajuModal";
-
 export default function DecipherSection() {
     return (
         <section
@@ -9,22 +7,22 @@ export default function DecipherSection() {
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start gap-16 md:gap-32">
                 {/* --- LEFT CONTENT (Unchanged) --- */}
                 <div className="lg:w-1/2 order-1 sticky top-10">
-                    <h2 className="font-serif text-4xl md:text-6xl text-slate-900 mb-8 leading-tight">
+                    <h2 className="text-4xl md:text-6xl text-slate-900 mb-8 leading-tight">
                         Your Timeline, <br />
-                        <span className="italic text-slate-500">
-                            Deciphered
-                        </span>
-                        .
+                        <span className="italic text-slate-500">Mapped</span>.
                     </h2>
 
-                    <div className="text-sm md:text-base text-slate-700 mb-12 leading-relaxed max-w-md">
-                        <span className="inline-modal-wrapper">
-                            <SajuModal />
-                        </span>{" "}
-                        is not a static test. It is a dynamic map of time. Our
-                        engine calculates the interaction between birth data and
-                        temporal cycles.
-                    </div>
+                    <p className="text-sm md:text-base text-slate-700 mb-12 leading-relaxed max-w-md">
+                        Life operates in recurring cycles. PulseMap projects
+                        your birth chart across your entire lifespan to identify
+                        the{" "}
+                        <strong className="text-slate-900 font-semibold italic">
+                            macro-trends
+                        </strong>{" "}
+                        in your career, energy, and stability. We provide the
+                        data you need to navigate your long-term rhythms with
+                        clarity.
+                    </p>
 
                     <div className="space-y-12">
                         {/* Item 1 */}
@@ -213,9 +211,9 @@ export default function DecipherSection() {
                                 Analysis #4021
                             </p>
                             <p className="font-serif italic text-slate-800 text-base leading-relaxed">
-                                "Internal energy is peaking. A perfect day for
-                                strategy and refining details rather than new
-                                launches."
+                                &quot;Internal energy is peaking. A perfect day
+                                for strategy and refining details rather than
+                                new launches.&quot;
                             </p>
                         </div>
                     </div>

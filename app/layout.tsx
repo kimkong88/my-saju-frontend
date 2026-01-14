@@ -17,8 +17,34 @@ const libre = Libre_Baskerville({
 });
 
 export const metadata: Metadata = {
-    title: "Chronax - Decode Your Time DNA",
-    description: "Chronax is a first temporal ...",
+    title: "PulseMap - Beyond Astrology",
+    description:
+        "Discover your unique personality signature from 10.3 million possible combinations. Beyond astrology—find the data behind who you are.",
+    icons: {
+        icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+        apple: "/icon.svg",
+    },
+    openGraph: {
+        title: "PulseMap - Beyond Astrology",
+        description:
+            "Discover your unique personality signature from 10.3 million possible combinations. Beyond astrology—find the data behind who you are.",
+        images: [
+            {
+                url: "/opengraph-image",
+                width: 1200,
+                height: 630,
+                alt: "PulseMap - Beyond Astrology",
+            },
+        ],
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "PulseMap - Beyond Astrology",
+        description:
+            "Discover your unique personality signature from 10.3 million possible combinations.",
+        images: ["/opengraph-image"],
+    },
 };
 
 export default function RootLayout({

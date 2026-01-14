@@ -13,29 +13,33 @@ export default function HeroSection() {
 
             {/* LAYER 3: Content (Top) */}
             <div className="font-serif mx-auto text-center relative z-10 max-w-7xl px-4 sm:px-6 pointer-events-none">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold tracking-tight mb-8 sm:mb-10 md:mb-12 text-slate-900 pointer-events-auto">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-semibold tracking-tight mb-8 sm:mb-10 md:mb-12 text-slate-900 pointer-events-auto leading-[1.1]">
                     Beyond Astrology.
                     <br />
-                    <span className="text-slate-400 font-semibold italic">
-                        Decode Your{" "}
-                        <strong className="text-slate-900 font-extrabold">
-                            Time DNA.
+                    <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl text-slate-400 font-normal italic">
+                        Find the{" "}
+                        <strong className="text-slate-900 font-semibold italic">
+                            Data
+                        </strong>{" "}
+                        Behind{" "}
+                        <strong className="text-slate-900 font-semibold italic">
+                            Who You Are.
                         </strong>
                     </span>
                 </h1>
 
                 <div className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-700 mb-10 sm:mb-12 md:mb-14 max-w-4xl mx-auto leading-relaxed font-medium px-2 sm:px-0 pointer-events-auto">
-                    The first temporal engine built to decode your life&apos;s
+                    The birth chart analysis built to decode your life&apos;s
                     logic. Powered by{" "}
                     <span className="inline-modal-wrapper">
                         <SajuModal />
                     </span>
                     , re-engineered for precision across{" "}
                     <strong className="text-slate-900 font-semibold">
-                        10.3 million unique probability signatures
-                    </strong>
-                    . Real-time alignment, relationship synergy, and future
-                    mapping—{" "}
+                        10.3 million{" "}
+                    </strong>{" "}
+                    unique combinations. Real-time alignment, relationship
+                    synergy, and future mapping—{" "}
                     <span className="inline-modal-wrapper">
                         <DataDrivenModal />
                     </span>
@@ -44,15 +48,15 @@ export default function HeroSection() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pointer-events-auto">
                     <a
                         href="#teaser"
-                        className="border border-slate-900/5 button--effect px-8 sm:px-10 py-4 sm:py-5 rounded-full font-semibold text-base sm:text-lg hover:border-white text-slate-900 w-full sm:w-auto text-center transition-colors order-2 sm:order-1 bg-white/80 backdrop-blur-sm"
+                        className="button--effect cursor-pointer bg-black hover:bg-slate-800 transition-colors text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-semibold text-base sm:text-lg w-full sm:w-auto text-center shadow-xl shadow-slate-900/10"
                     >
-                        Try Teaser
+                        Get Your Report
                     </a>
                     <a
-                        href="#waitlist"
-                        className="button--effect cursor-pointer bg-black hover:bg-slate-800 transition-colors text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-semibold text-base sm:text-lg w-full sm:w-auto text-center shadow-xl shadow-slate-900/10 order-1 sm:order-2"
+                        href="/signup"
+                        className="border border-slate-900 button--effect px-8 sm:px-10 py-4 sm:py-5 rounded-full font-semibold text-base sm:text-lg hover:border-slate-900 text-slate-900 w-full sm:w-auto text-center transition-colors bg-white/80 backdrop-blur-sm"
                     >
-                        Pre-Register
+                        Sign Up for App
                     </a>
                 </div>
             </div>

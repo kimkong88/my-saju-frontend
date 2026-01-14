@@ -23,10 +23,10 @@ export default function DataDrivenModal({
                     {/* Header Section */}
                     <div className="mb-10">
                         <p className="text-slate-500 text-sm leading-relaxed">
-                            Saju is a high-resolution combinatorial system. Our
+                            Bazi is a high-resolution combinatorial system. Our
                             engine calculates across a landscape of{" "}
                             <span className="text-slate-900 font-semibold underline decoration-blue-200">
-                                10.3 million unique probability signatures
+                                10.3 million unique combinations
                             </span>
                             .
                         </p>

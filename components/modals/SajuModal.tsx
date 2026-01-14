@@ -15,18 +15,17 @@ export default function SajuModal({
                     <span
                         className={`${textColor} font-bold underline cursor-pointer`}
                     >
-                        Saju(Bazi)
+                        Bazi
                     </span>
                 </Modal.Trigger>
             }
-            title="What is Saju(Bazi)?"
+            title="What is Bazi?"
             description={
                 <div className="w-full mx-auto py-2">
                     {/* Header Section */}
                     <div className="text-left mb-10">
                         <p className="text-slate-500 text-sm leading-relaxed">
-                            Saju(Bazi) is a data-driven framework that decodes
-                            the{" "}
+                            Bazi is a data-driven framework that decodes the{" "}
                             <span className="text-slate-900 font-semibold uppercase tracking-wider text-[11px]">
                                 Four Pillars
                             </span>{" "}
@@ -47,7 +46,7 @@ export default function SajuModal({
                                     Not Astrology
                                 </h4>
                                 <p className="text-sm text-slate-500 leading-snug">
-                                    While astrology tracks planets, Saju
+                                    While astrology tracks planets, Bazi
                                     calculates the binary interaction of five
                                     core vectors:{" "}
                                     <span className="font-mono font-bold text-slate-700 bg-slate-100 px-1 rounded">
