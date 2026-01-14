@@ -43,14 +43,14 @@ export default function SajuModal({
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-900 text-sm mb-1">
-                                    Not Astrology
+                                    Beyond Astrology
                                 </h4>
                                 <p className="text-sm text-slate-500 leading-snug">
-                                    While astrology tracks planets, Bazi
+                                    While others astrology tracks planets, Bazi
                                     calculates the binary interaction of five
-                                    core vectors:{" "}
+                                    core elements:{" "}
                                     <span className="font-mono font-bold text-slate-700 bg-slate-100 px-1 rounded">
-                                        T, F, E, M, W
+                                        Fire, Earth, Metal, Water, Wood
                                     </span>
                                     .
                                 </p>
@@ -72,7 +72,7 @@ export default function SajuModal({
                                         universal timestamp
                                     </span>
                                     , mapping how your DNA interacts with
-                                    specific temporal cycles.
+                                    specific elements.
                                 </p>
                             </div>
                         </div>
