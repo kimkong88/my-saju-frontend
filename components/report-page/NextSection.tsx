@@ -8,30 +8,30 @@ export default function NextSection() {
         {
             title: "Daily Pulse",
             description:
-                "Your personal energy calendar—know exactly which days to launch projects, make big decisions, or take calculated risks",
+                "Your personal energy calendar—know exactly which days to launch projects, make big decisions, or take calculated risks. Stop guessing when you&apos;ll be at your best.",
             preview:
-                "Example: March 15th — Peak energy for strategic planning. March 22nd — Ideal for creative breakthroughs.",
+                "Your next peak energy window is coming up—ideal for strategic planning and important launches. Unlock to see your full 30-day calendar with daily energy ratings.",
         },
         {
             title: "Timeline Mapping",
             description:
-                "See your 10-year cycles and major life transitions before they happen—plan your career moves, relationships, and investments with precision",
+                "See your 10-year cycles and major life transitions before they happen—plan your career moves, relationships, and investments with precision. Never be blindsided by timing again.",
             preview:
-                "Example: 2026-2036 — Expansion phase. Q3 2026 — Key pivot point for major decisions.",
+                "You&apos;re currently in an expansion phase with a major transition point approaching. Unlock to see your complete cycle timeline and plan ahead.",
         },
         {
             title: "Optimal Timing",
             description:
-                "Know your best hours for deep work, creativity, and important conversations—maximize every day",
+                "Know your best hours for deep work, creativity, and important conversations—maximize every day. Work with your natural rhythms, not against them.",
             preview:
-                "Example: Peak hours 9-11 AM, 2-4 PM for focused work. Avoid 12-1 PM for critical decisions.",
+                "Today&apos;s optimal hours for you: 9-11 AM for focused work, 2-4 PM for creative tasks. Unlock to see your personalized daily schedule.",
         },
         {
             title: "Relationship Synergy",
             description:
-                "Discover the best times to connect with partners, colleagues, and friends—understand relationship timing and compatibility",
+                "Discover the best times to connect with partners, colleagues, and friends—understand relationship timing and compatibility. Know when to have difficult conversations.",
             preview:
-                "Example: Compatibility score: 94%. Best connection times: Evenings for deep conversations.",
+                "Your compatibility insights show optimal connection times and communication patterns. Unlock to see relationship timing for all your important connections.",
         },
     ];
 
@@ -59,18 +59,58 @@ export default function NextSection() {
                             <strong className="text-slate-900 font-semibold">
                                 WHEN you&apos;re at your best
                             </strong>
-                            .
+                            . Your potential is fixed, but your energy cycles
+                            fluctuate daily, monthly, and across years. Knowing
+                            when to push and when to rest can be the difference
+                            between success and burnout.
                         </p>
+                    </div>
+
+                    {/* What You're Missing Now */}
+                    <div className="bg-amber-50 border border-amber-200 rounded-sm p-6 mb-12">
+                        <h3 className="text-base font-semibold text-slate-900 mb-3">
+                            What You&apos;re Missing Right Now
+                        </h3>
+                        <ul className="space-y-2 text-sm text-slate-700">
+                            <li className="flex items-start gap-2">
+                                <span className="text-amber-600 mt-1 flex-shrink-0">
+                                    •
+                                </span>
+                                <span>
+                                    Your next peak energy day—when to schedule
+                                    important meetings or launch projects
+                                </span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-amber-600 mt-1 flex-shrink-0">
+                                    •
+                                </span>
+                                <span>
+                                    Today&apos;s optimal hours for deep work,
+                                    creativity, or difficult conversations
+                                </span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-amber-600 mt-1 flex-shrink-0">
+                                    •
+                                </span>
+                                <span>
+                                    Your current 10-year cycle phase and when
+                                    major transitions are coming
+                                </span>
+                            </li>
+                        </ul>
                     </div>
 
                     {/* Social Proof */}
                     <div className="mb-6 pt-8 border-t border-slate-200">
                         <p className="text-sm text-slate-600 leading-relaxed">
                             <strong className="text-slate-900 font-semibold">
-                                Join 500+ users
+                                Join 2,500+ users
                             </strong>{" "}
-                            discovering their optimal timing and planning their
-                            lives with precision.
+                            who plan their lives around their energy cycles,
+                            avoiding bad timing on major decisions and
+                            maximizing their natural strengths.
                         </p>
                     </div>
                 </div>
@@ -103,7 +143,7 @@ export default function NextSection() {
                                 <div className="mt-auto pt-6 border-t border-slate-200 bg-gradient-to-br from-slate-50 to-slate-100/50 -mx-2 px-4 py-4 rounded-sm relative overflow-hidden">
                                     <div className="absolute top-0 left-0 w-1 h-full bg-slate-900/20"></div>
                                     <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2.5">
-                                        Example Preview
+                                        What You&apos;ll See
                                     </p>
                                     <p className="text-sm text-slate-700 leading-relaxed font-medium">
                                         {feature.preview}
@@ -132,8 +172,8 @@ export default function NextSection() {
                         </h3>
                         <div className="space-y-4 text-base md:text-lg text-slate-700 leading-relaxed">
                             <p>
-                                Your potential is fixed, but your energy cycles
-                                fluctuate. Our forecasting tools show you:
+                                Stop working against your natural rhythms. Our
+                                forecasting tools give you:
                             </p>
                             <ul className="space-y-4 ml-4">
                                 <li className="flex items-start gap-3">
@@ -203,18 +243,12 @@ export default function NextSection() {
                 </p>
 
                 {/* CTA Section */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <div className="flex justify-center">
                     <Link
                         href="/signup"
-                        className="cursor-pointer px-8 py-4 bg-slate-900 text-white rounded-full hover:bg-slate-800 transition-all duration-200 button--effect text-base font-medium"
+                        className="cursor-pointer px-10 py-5 bg-slate-900 text-white rounded-full hover:bg-slate-800 transition-all duration-200 button--effect text-base font-semibold"
                     >
-                        Sign Up to Unlock
-                    </Link>
-                    <Link
-                        href="/"
-                        className="cursor-pointer bg-white px-8 py-4 border-2 border-slate-900 text-slate-900 rounded-full hover:bg-slate-50 transition-all duration-200 button--effect text-base font-medium"
-                    >
-                        Learn More
+                        Unlock Your Energy Calendar
                     </Link>
                 </div>
             </div>

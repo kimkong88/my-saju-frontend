@@ -41,14 +41,22 @@ export default function WhoYouAreSection({
                             <h3 className="text-2xl font-semibold text-slate-900 mb-4 tracking-tight">
                                 Your Special Traits
                             </h3>
-                            <p className="text-base text-slate-700 leading-relaxed max-w-3xl mb-2">
-                                These are rare patterns found in your chart—most
-                                people have 0-1 special traits. You have{" "}
-                                <strong className="text-slate-900 font-semibold">
-                                    {specialTraits.length}
-                                </strong>
-                                , making your chart exceptionally unique.
-                            </p>
+                            {specialTraits.length >= 2 ? (
+                                <p className="text-base text-slate-700 leading-relaxed max-w-3xl mb-2">
+                                    These are rare patterns found in your
+                                    chart—most people have 0-1 special traits.
+                                    You have{" "}
+                                    <strong className="text-slate-900 font-semibold">
+                                        {specialTraits.length}
+                                    </strong>
+                                    , making your chart exceptionally unique.
+                                </p>
+                            ) : (
+                                <p className="text-base text-slate-700 leading-relaxed max-w-3xl mb-2">
+                                    These are rare patterns found in your
+                                    chart—most people have 0-1 special traits.
+                                </p>
+                            )}
                         </div>
                         {/* --- GRID: Structural & Clean --- */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -88,8 +96,8 @@ export default function WhoYouAreSection({
                     <p className="text-base md:text-lg text-slate-700 leading-relaxed">
                         Want to know{" "}
                         <Link
-                            href="/#teaser"
-                            className="text-slate-900 font-medium underline decoration-slate-300 hover:decoration-slate-900 transition-colors inline-flex items-center gap-1"
+                            href="/signup"
+                            className="text-slate-900 font-semibold underline decoration-slate-300 hover:decoration-slate-900 transition-colors inline-flex items-center gap-1"
                         >
                             when you&apos;re at your best
                         </Link>

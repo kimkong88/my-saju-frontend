@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
+import { env } from "@/lib/env";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -69,7 +70,7 @@ export default function RootLayout({
 
                 <Footer />
                 <Toaster />
-                <Analytics />
+                {env.NODE_ENV === "production" && <Analytics />}
             </body>
         </html>
     );
