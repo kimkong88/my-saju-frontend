@@ -159,35 +159,35 @@ export default function BirthChartSection({
                                 </div>
 
                                 <div className="space-y-4 flex-1">
-                                    {(
-                                        [
-                                            {
-                                                key: "year",
-                                                label: "Year",
-                                                data: fourPillars.year,
-                                            },
-                                            {
-                                                key: "month",
-                                                label: "Month",
-                                                data: fourPillars.month,
-                                            },
-                                            {
-                                                key: "day",
-                                                label: "Day",
-                                                data: fourPillars.day,
-                                            },
-                                            {
-                                                key: "hour",
-                                                label: "Hour",
-                                                data: fourPillars.hour,
-                                            },
-                                        ] as Array<{
-                                            key: string;
-                                            label: string;
-                                            data: FourPillar;
-                                        }>
-                                    ).map((pillar) => {
-                                        const isCore = pillar.data.isCore;
+                                    {[
+                                        {
+                                            key: "year",
+                                            label: "Year",
+                                            data: fourPillars.year as FourPillar,
+                                        },
+                                        {
+                                            key: "month",
+                                            label: "Month",
+                                            data: fourPillars.month as FourPillar,
+                                        },
+                                        {
+                                            key: "day",
+                                            label: "Day",
+                                            data: fourPillars.day as FourPillar,
+                                        },
+                                        {
+                                            key: "hour",
+                                            label: "Hour",
+                                            data: fourPillars.hour as FourPillar,
+                                        },
+                                    ].map((pillar) => {
+                                        const hasData =
+                                            pillar.data !== null &&
+                                            pillar.data !== undefined;
+                                        const isCore = hasData
+                                            ? pillar.data.isCore ?? false
+                                            : false;
+
                                         return (
                                             <div
                                                 key={pillar.key}
@@ -208,9 +208,14 @@ export default function BirthChartSection({
                                                         <div className="text-xs font-bold uppercase tracking-wider mb-1.5 opacity-70">
                                                             {pillar.label}
                                                         </div>
-                                                        <div className="text-xs opacity-80 italic mb-2">
-                                                            {pillar.data.aspect}
-                                                        </div>
+                                                        {hasData && (
+                                                            <div className="text-xs opacity-80 italic mb-2">
+                                                                {
+                                                                    pillar.data
+                                                                        .aspect
+                                                                }
+                                                            </div>
+                                                        )}
                                                     </div>
 
                                                     <div>
@@ -221,10 +226,15 @@ export default function BirthChartSection({
                                                                     : "text-slate-900"
                                                             }`}
                                                         >
-                                                            {
+                                                            {hasData ? (
                                                                 pillar.data
                                                                     .meaning
-                                                            }
+                                                            ) : (
+                                                                <span className="text-slate-400 italic">
+                                                                    Not
+                                                                    available
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </div>
