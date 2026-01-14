@@ -121,6 +121,18 @@ export default function CompatibilityForm({
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Get user's timezone
+    const getUserTimezone = (): string => {
+        if (typeof window !== "undefined") {
+            try {
+                return Intl.DateTimeFormat().resolvedOptions().timeZone;
+            } catch {
+                return "UTC";
+            }
+        }
+        return "UTC";
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -158,7 +170,7 @@ export default function CompatibilityForm({
                 person2: {
                     birthDateTime: person2BirthDateTime,
                     gender: data.gender as "male" | "female",
-                    birthTimezone: "Asia/Seoul", // Hardcoded for testing as per user
+                    birthTimezone: getUserTimezone(),
                     isTimeKnown: person2IsTimeKnown,
                 },
                 isTeaser: true,
