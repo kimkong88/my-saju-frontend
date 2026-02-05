@@ -1,13 +1,24 @@
 import TodayPageContent from "@/components/today-page/TodayPageContent";
-import {
-    getActiveBlessings,
-    type ActiveBlessing,
-} from "@/app/actions/blessingsAction";
+import { getActiveBlessings } from "@/app/actions/blessingsAction";
 import { getTodayForecast } from "@/app/actions/reportAction";
 import { getQuestions } from "@/app/actions/meAction";
 import { getSubscriptionStatus } from "@/app/actions/subscriptionAction";
 import type { TodayForecastResponse } from "@/types/today";
 import type { QuestionsResponse } from "@/app/actions/meAction";
+
+interface ReceivedBlessing {
+    id: string;
+    fromName: string;
+    fromElement?: string;
+    fromCode?: string;
+    isFriend?: boolean;
+    blessingEmoji?: string;
+    blessingName?: string;
+    blessingDescription?: string;
+    personalMessage?: string;
+    sentAt: string;
+    expiresAt: string;
+}
 
 // Mock data - will be replaced with API call
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -142,7 +153,7 @@ const mockTodayData = {
 
 export default async function TodayPage() {
     // Get active blessings, today's forecast, questions, and subscription status from API
-    let receivedBlessings: ActiveBlessing[] = [];
+    let receivedBlessings: ReceivedBlessing[] = [];
     let todayForecast: TodayForecastResponse | null = null;
     let questionsData: QuestionsResponse | null = null;
     let isPremium = false;

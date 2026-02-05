@@ -27,7 +27,7 @@ interface CompatibilityShareSectionProps {
     };
     pairingTitle: {
         name: string;
-        subtitle: string;
+        subtitle?: string;
     };
     compatCode: string;
 }

@@ -201,7 +201,6 @@ export default function CompatibilityReportPage() {
                     person1Code={report.person1.identity.code}
                     person2Code={report.person2.identity.code}
                     isPremium={isPremium}
-                    isFirstCategory={index === 0}
                 />
             ))}
 

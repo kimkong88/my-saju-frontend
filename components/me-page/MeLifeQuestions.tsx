@@ -167,7 +167,7 @@ export default function MeLifeQuestions({
         ) {
             emblaApi.reInit();
         }
-    }, [emblaApi, questionsData.questions]);
+    }, [emblaApi, questionsData?.questions]);
 
     // Helper to generate question ID from title (for mock data)
     // When API is integrated, questions will have proper IDs

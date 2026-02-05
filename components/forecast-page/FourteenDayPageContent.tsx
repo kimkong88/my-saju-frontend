@@ -119,12 +119,12 @@ export default function FourteenDayPageContent({
 
             <SocialConnectionModal
                 isOpen={socialModalOpen}
-                onClose={() => setSocialModalOpen(false)}
+                onOpenChange={setSocialModalOpen}
             />
 
             <SubscriptionModal
                 isOpen={subscriptionModalOpen}
-                onClose={() => setSubscriptionModalOpen(false)}
+                onOpenChange={setSubscriptionModalOpen}
             />
         </>
     );

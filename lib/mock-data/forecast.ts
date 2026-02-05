@@ -29,14 +29,14 @@ export const mockTomorrowForecast: TomorrowForecast = {
     },
     energy: {
         overallScore: 7,
-        career: 8,
-        wealth: 6,
-        relationships: 5,
-        health: 7,
-        creativity: 9,
+        categories: [
+            { name: "career", score: 8, overview: "Strong career energy" },
+            { name: "wealth", score: 6, overview: "Moderate wealth energy" },
+            { name: "relationships", score: 5, overview: "Neutral relationship energy" },
+            { name: "health", score: 7, overview: "Good health energy" },
+            { name: "creativity", score: 9, overview: "Excellent creative energy" },
+        ],
     },
-    dailyAnalysis:
-        "Tomorrow marks a significant shift in your energy patterns, with Metal element dominance creating exceptional clarity and drive. Your chart shows a rare alignment between your Day Master and tomorrow's energy, amplifying your natural decision-making abilities.",
     specialEvents: [
         {
             name: "Peak Fortune Alignment",
@@ -44,25 +44,7 @@ export const mockTomorrowForecast: TomorrowForecast = {
             description:
                 "Rare alignment of Fire and Metal elements creates exceptional opportunity for financial decisions and career moves.",
             rarity: "1 in 50 days",
-            type: "alignment",
             timeWindow: "2-4 PM",
-        },
-    ],
-    goodThings: [
-        {
-            emoji: "💼",
-            title: "Unexpected Career Opportunity",
-            description:
-                "Based on your high career energy (8/10), you might receive recognition, positive feedback, or an unexpected opportunity at work tomorrow.",
-        },
-    ],
-    challenges: [
-        {
-            emoji: "⚠️",
-            title: "Communication Friction",
-            description:
-                "Your relationship energy is moderate (5/10). Focus on maintaining existing connections rather than starting new ones.",
-            whatToDo: "Avoid important conversations during afternoon hours when communication energy dips.",
         },
     ],
 };
@@ -152,7 +134,6 @@ export const mockFourteenDayForecast: FourteenDayForecast = {
                     pillar: "Multiple Days",
                     category: "power",
                     strength: "amplified",
-                    occurrenceCount: 2,
                 },
                 occurrenceCount: 12, // Appears on 12 out of 14 days
                 percentage: 86,
@@ -166,7 +147,6 @@ export const mockFourteenDayForecast: FourteenDayForecast = {
                     pillar: "Monthly",
                     category: "wealth",
                     strength: "single",
-                    occurrenceCount: 1,
                 },
                 occurrenceCount: 10,
                 percentage: 71,
@@ -180,7 +160,6 @@ export const mockFourteenDayForecast: FourteenDayForecast = {
                     pillar: "Year, Month",
                     category: "output",
                     strength: "dominant",
-                    occurrenceCount: 3,
                 },
                 occurrenceCount: 8,
                 percentage: 57,
@@ -194,7 +173,6 @@ export const mockFourteenDayForecast: FourteenDayForecast = {
                     pillar: "Annual",
                     category: "friend",
                     strength: "single",
-                    occurrenceCount: 1,
                 },
                 occurrenceCount: 7,
                 percentage: 50,
@@ -208,7 +186,6 @@ export const mockFourteenDayForecast: FourteenDayForecast = {
                     pillar: "Luck Era",
                     category: "wealth",
                     strength: "single",
-                    occurrenceCount: 1,
                 },
                 occurrenceCount: 5,
                 percentage: 36,

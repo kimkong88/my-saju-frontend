@@ -369,7 +369,7 @@ export default function MonthlyCalendar({
                                         <div className="space-y-4">
                                             {Object.entries(
                                                 displayedBestDays
-                                            ).map(([category, items]) => {
+                                            ).map(([category, items]: [string, Array<{ date: string }>]) => {
                                                 if (
                                                     !items ||
                                                     items.length === 0
@@ -430,7 +430,7 @@ export default function MonthlyCalendar({
                                         <div className="space-y-4">
                                             {Object.entries(
                                                 displayedWorstDays
-                                            ).map(([category, items]) => {
+                                            ).map(([category, items]: [string, Array<{ date: string }>]) => {
                                                 if (
                                                     !items ||
                                                     items.length === 0

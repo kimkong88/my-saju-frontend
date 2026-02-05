@@ -115,7 +115,7 @@ export default async function Page({
                 identity={report.identity}
                 rarity={report.rarity}
                 chartMeaning={report.chartMeaning}
-                luckCycles={(report as { luckCycles?: unknown }).luckCycles}
+                luckCycles={(report as { luckCycles?: { current: { emoji: string; title: string; description: string; expireAt: string; technicalBasis: string[]; }; next?: { emoji: string; title: string; description: string; startsAt: string; technicalBasis: string[]; } } }).luckCycles}
                 isPremium={isPremium}
             />
             <IntroductionSection

@@ -247,7 +247,7 @@ function CategorySection({
                                         <p className="text-sm text-white/90 leading-relaxed mb-2">
                                             {subCategory.result.analysis}
                                         </p>
-                                        {subCategory.result.actionableTip && (
+                                        {"actionableTip" in subCategory.result && subCategory.result.actionableTip && (
                                             <div className="mt-3 pt-3 border-t border-white/20">
                                                 <p className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-1">
                                                     Tip

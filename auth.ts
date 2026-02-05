@@ -400,15 +400,15 @@ export const config = {
                                 hasUserId: !!userData.userId,
                             }
                         );
-                        // Invalid token data - return invalid token
-                        return {
-                            ...token,
-                            accessToken: null,
-                            accessTokenExpires: 0,
-                            refreshToken: null,
-                            refreshTokenExpires: 0,
-                            userId: null,
-                        };
+                    // Invalid token data - return invalid token
+                    return {
+                        ...token,
+                        accessToken: undefined,
+                        accessTokenExpires: 0,
+                        refreshToken: undefined,
+                        refreshTokenExpires: 0,
+                        userId: undefined,
+                    };
                     }
 
                     // Debug: Log token storage (first 20 chars only)
@@ -485,11 +485,11 @@ export const config = {
                     );
                     return {
                         ...token,
-                        accessToken: null,
+                        accessToken: undefined,
                         accessTokenExpires: 0,
-                        refreshToken: null,
+                        refreshToken: undefined,
                         refreshTokenExpires: 0,
-                        userId: null,
+                        userId: undefined,
                     };
                 }
 
@@ -508,11 +508,11 @@ export const config = {
                     );
                     return {
                         ...token,
-                        accessToken: null,
+                        accessToken: undefined,
                         accessTokenExpires: 0,
-                        refreshToken: null, // Clear refresh token so it's not reused
+                        refreshToken: undefined, // Clear refresh token so it's not reused
                         refreshTokenExpires: 0,
-                        userId: null,
+                        userId: undefined,
                         error: "RefreshTokenError",
                     };
                 }
@@ -520,13 +520,11 @@ export const config = {
 
             return token;
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         async session({
             session,
             token,
-        }: {
-            session: { user?: unknown; error?: string; [key: string]: unknown };
-            token: JWT;
-        }) {
+        }: any) {
             try {
                 // Set error flag if refresh failed (following Auth.js guide pattern)
                 session.error = token.error;

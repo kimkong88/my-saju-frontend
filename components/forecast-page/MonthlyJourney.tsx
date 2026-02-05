@@ -56,7 +56,6 @@ interface MonthlyJourneyProps {
                     | "friend"
                     | null;
                 strength: "single" | "amplified" | "dominant" | "extreme";
-                occurrenceCount: number;
             };
             occurrenceCount: number;
             percentage: number;
@@ -296,7 +295,7 @@ export default function MonthlyJourney({
                                                   displayedEnergies.map(
                                                       (item, idx) => {
                                                           const god =
-                                                              item.tenGod;
+                                                              "tenGod" in item ? item.tenGod : item;
                                                           const isAmplified =
                                                               god.strength ===
                                                                   "amplified" ||
@@ -342,8 +341,8 @@ export default function MonthlyJourney({
                                                                           </div>
                                                                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white text-slate-600 border border-slate-200 whitespace-nowrap flex-shrink-0">
                                                                               {getSourceLabel(
-                                                                                  god.source,
-                                                                                  god.pillar
+                                                                                  "source" in god ? god.source : "natal",
+                                                                                  "pillar" in god ? god.pillar : ""
                                                                               )}
                                                                           </span>
                                                                       </div>
@@ -359,7 +358,8 @@ export default function MonthlyJourney({
                                                   )
                                                 : // Legacy structure
                                                   displayedEnergies.map(
-                                                      (god, idx) => {
+                                                      (godItem, idx) => {
+                                                          const god = "tenGod" in godItem ? godItem.tenGod : godItem;
                                                           const isAmplified =
                                                               god.strength ===
                                                               "amplified";
@@ -378,8 +378,7 @@ export default function MonthlyJourney({
                                                                       }
                                                                       {isAmplified && (
                                                                           <span className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-amber-500 rounded-full flex items-center justify-center text-[8px] md:text-[10px] font-bold text-white">
-                                                                              {god.occurrenceCount ||
-                                                                                  2}
+                                                                              {"occurrenceCount" in god ? god.occurrenceCount : 2}
                                                                           </span>
                                                                       )}
                                                                   </div>

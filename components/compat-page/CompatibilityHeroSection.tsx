@@ -43,7 +43,7 @@ interface CompatibilityHeroSectionProps {
     };
     pairingTitle: {
         name: string;
-        subtitle: string;
+        subtitle?: string;
     };
     rarity: {
         oneIn: number;

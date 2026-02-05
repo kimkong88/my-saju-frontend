@@ -122,20 +122,20 @@ export default function AddFriendModal({
                     errorMsg.includes("duplicate")
                 ) {
                     userMessage = "This person has already been added.";
-                } else if (error.status === 404) {
+                } else if ("status" in err && err.status === 404) {
                     userMessage =
                         "User code not found. Please check the code and try again.";
-                } else if (error.status === 400) {
+                } else if ("status" in err && err.status === 400) {
                     userMessage =
                         "Invalid information provided. Please check your input and try again.";
-                } else if (error.status === 403) {
+                } else if ("status" in err && err.status === 403) {
                     userMessage =
                         "You don't have permission to perform this action.";
-                } else if (error.status === 429) {
+                } else if ("status" in err && err.status === 429) {
                     userMessage = "Too many requests. Please try again later.";
                 } else {
                     // Use the error message if it's already user-friendly
-                    userMessage = error.message;
+                    userMessage = err.message;
                 }
             }
 

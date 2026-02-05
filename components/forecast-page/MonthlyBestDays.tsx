@@ -97,7 +97,7 @@ export default function MonthlyBestDays({ bestDays }: MonthlyBestDaysProps) {
                                     </h4>
                                 </div>
                                 <div className="space-y-2">
-                                    {dates.map((date, index) => (
+                                    {dates.map((date: string, index: number) => (
                                         <div
                                             key={index}
                                             className="flex items-center gap-2"

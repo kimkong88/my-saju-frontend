@@ -198,7 +198,6 @@ function BlessingCard({
     isPremium: boolean;
     onClick: () => void;
 }) {
-    const hasMessage = !!blessing.personalMessage;
     const active = isActive(blessing);
     const remaining = useBlessingCountdown(blessing.expiresAt);
     const timeText = formatBlessingTime(remaining);

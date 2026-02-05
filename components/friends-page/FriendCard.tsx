@@ -220,15 +220,10 @@ export default function FriendCard({
             router.push(`/compatibility/${reportCode}`);
         } catch (error) {
             console.error("Error checking compatibility:", error);
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const err =
-                error instanceof Error
-                    ? error
-                    : new Error("Failed to check compatibility");
 
             // Extract error message
             let errorMessage = "Failed to check compatibility";
-            if (error?.message) {
+            if (error instanceof Error) {
                 errorMessage = error.message;
             } else if (typeof error === "string") {
                 errorMessage = error;
@@ -317,25 +312,20 @@ export default function FriendCard({
             setIsRelationshipDropdownOpen(false);
         } catch (error) {
             console.error("Error updating relationship:", error);
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const err =
-                error instanceof Error
-                    ? error
-                    : new Error("Failed to update relationship");
 
             // Convert backend error to user-friendly message
             let userMessage = "Failed to update relationship";
 
-            if (error.message) {
+            if (error instanceof Error) {
                 const errorMsg = error.message.toLowerCase();
                 if (errorMsg.includes("relationship must be one of")) {
                     userMessage = "Invalid relationship type selected";
-                } else if (error.status === 400) {
+                } else if ("status" in error && error.status === 400) {
                     userMessage =
                         error.message || "Invalid information provided";
-                } else if (error.status === 404) {
+                } else if ("status" in error && error.status === 404) {
                     userMessage = "Friend not found";
-                } else if (error.status === 403) {
+                } else if ("status" in error && error.status === 403) {
                     userMessage =
                         "You don't have permission to perform this action";
                 } else {
