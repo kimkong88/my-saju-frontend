@@ -48,7 +48,7 @@ export default function DifferentiatorSection() {
                         <strong className="text-slate-900 font-semibold">
                             16 personality types
                         </strong>
-                        , PulseMap analyzes your unique birth coordinates
+                        , Unstar analyzes your unique birth coordinates
                         across{" "}
                         <strong className="text-slate-900 font-semibold">
                             10.3 million

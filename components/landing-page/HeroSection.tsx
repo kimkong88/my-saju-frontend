@@ -4,43 +4,34 @@ import SajuModal from "../modals/SajuModal";
 export default function HeroSection() {
     return (
         <section className="bg-white relative pt-32 sm:pt-40 md:pt-48 lg:pt-56 pb-20 sm:pb-24 md:pb-32 lg:pb-40 hero-gradient px-4 sm:px-6 overflow-hidden">
-            {/* LAYER 1: Spline (Bottom) */}
-
-            {/* LAYER 2: Time Compass (Middle) - INCREASED VISIBILITY */}
+            {/* LAYER 2: Time Compass (Middle) */}
             <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none overflow-hidden">
-                <TimeCompass className="w-[600px] h-[600px] md:w-[1000px] md:h-[1000px] text-slate-900 opacity-20 scale-125" />
+                {/* Decreased opacity slightly to let the text pop more on small screens */}
+                <TimeCompass className="w-[600px] h-[600px] md:w-[1000px] md:h-[1000px] text-slate-900 opacity-[0.12] scale-125" />
             </div>
 
             {/* LAYER 3: Content (Top) */}
             <div className="font-serif mx-auto text-center relative z-10 max-w-7xl px-4 sm:px-6 pointer-events-none">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-semibold tracking-tight mb-8 sm:mb-10 md:mb-12 text-slate-900 pointer-events-auto leading-[1.1]">
-                    Beyond Astrology.
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight mb-8 sm:mb-10 md:mb-12 text-slate-900 pointer-events-auto leading-[1.1]">
+                    Tired of the Stars?
                     <br />
-                    <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl text-slate-400 font-normal italic">
-                        Find the{" "}
-                        <strong className="text-slate-900 font-semibold italic">
-                            Data
-                        </strong>{" "}
-                        Behind{" "}
-                        <strong className="text-slate-900 font-semibold italic">
-                            Who You Are.
-                        </strong>
+                    <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-slate-600 font-normal italic">
+                        Try the Pillar.
                     </span>
                 </h1>
 
-                <div className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-700 mb-10 sm:mb-12 md:mb-14 max-w-4xl mx-auto leading-relaxed font-medium px-2 sm:px-0 pointer-events-auto">
+                <div className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-700 mb-10 sm:mb-12 md:mb-14 max-w-4xl mx-auto leading-relaxed font-medium px-2 sm:px-0 pointer-events-auto font-sans">
                     The birth chart analysis built to decode your life&apos;s
                     logic. Powered by{" "}
-                    <span className="inline-modal-wrapper">
+                    <span className="inline-modal-wrapper underline decoration-slate-300 underline-offset-4 cursor-help">
                         <SajuModal />
                     </span>
                     , re-engineered for precision across{" "}
-                    <strong className="text-slate-900 font-semibold">
+                    <strong className="text-slate-900 font-bold">
                         10.3 million{" "}
                     </strong>{" "}
-                    unique combinations. Real-time alignment, relationship
-                    synergy, and future mapping—{" "}
-                    <span className="inline-modal-wrapper">
+                    unique combinations. Real-time alignment and future mapping—{" "}
+                    <span className="inline-modal-wrapper underline decoration-slate-300 underline-offset-4 cursor-help">
                         <DataDrivenModal />
                     </span>
                 </div>
@@ -48,15 +39,9 @@ export default function HeroSection() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pointer-events-auto">
                     <a
                         href="#teaser"
-                        className="button--effect cursor-pointer bg-black hover:bg-slate-800 transition-colors text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-semibold text-base sm:text-lg w-full sm:w-auto text-center shadow-xl shadow-slate-900/10"
+                        className="button--effect cursor-pointer bg-slate-900 hover:bg-black transition-all text-white px-10 py-5 rounded-full font-semibold text-lg w-full sm:w-auto text-center shadow-2xl shadow-slate-900/20 active:scale-95"
                     >
-                        Get Your Report
-                    </a>
-                    <a
-                        href="/signup"
-                        className="border border-slate-900 button--effect px-8 sm:px-10 py-4 sm:py-5 rounded-full font-semibold text-base sm:text-lg hover:border-slate-900 text-slate-900 w-full sm:w-auto text-center transition-colors bg-white/80 backdrop-blur-sm"
-                    >
-                        Sign Up for App
+                        Get My Free Reading
                     </a>
                 </div>
             </div>
@@ -67,7 +52,7 @@ export default function HeroSection() {
 // Updated Compass: Thicker lines and removed opacity classes from internal elements to let parent control it
 function TimeCompass({ className }: { className?: string }) {
     return (
-        <div className={`select-none pointer-events-none ${className}`}>
+        <div className={`select-none pointer-events-none blur-[3px] ${className}`}>
             {/* Added animate-spin-slow (make sure you have this in tailwind config or use style) */}
             <svg
                 viewBox="0 0 500 500"

@@ -3,18 +3,23 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+    ComboBox,
     DateField,
     DateInputGroup,
     FieldError,
     Form,
+    Input,
     Label,
     ListBox,
     Select,
     Surface,
     TimeField,
 } from "@heroui/react";
-import { createPersonalReport } from "@/app/actions/reportAction";
-import { createBirthDateTime } from "@/lib/utils/date";
+import { createBirthDateTime, formatBirthDateToISO } from "@/lib/utils/date";
+import cityTimezones from "city-timezones";
+import { CreateUserData } from "@/types/user";
+import { createUser } from "@/app/actions/userAction";
+import { signInWithCredentials } from "@/app/actions/authAction";
 
 // Simple Chevron Icon for perfect alignment
 const ChevronDownIcon = ({ className }: { className?: string }) => (
@@ -38,47 +43,107 @@ const ChevronDownIcon = ({ className }: { className?: string }) => (
 export default function TeaserSection() {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formData, setFormData] = useState({
+        birthDate: "",
+        birthTime: "",
+        gender: "",
+        birthCity: "",
+        currentCity: "",
+    });
+    const [birthCitySuggestions, setBirthCitySuggestions] = useState<
+        Array<{
+            id: string;
+            label: string;
+            timezone: string;
+        }>
+    >([]);
+    const [currentCitySuggestions, setCurrentCitySuggestions] = useState<
+        Array<{
+            id: string;
+            label: string;
+            timezone: string;
+        }>
+    >([]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
 
         try {
-            const formData = new FormData(e.currentTarget);
+            const formDataObj = new FormData(e.currentTarget);
             const data: Record<string, string> = {};
 
-            formData.forEach((value, key) => {
+            formDataObj.forEach((value, key) => {
                 data[key] = value.toString();
             });
+
+            // Validate required fields
+            if (!data.birthDate || !data.gender) {
+                alert("Please fill in all required fields");
+                setIsSubmitting(false);
+                return;
+            }
+
+            if (!data.birthCity || !data.currentCity) {
+                alert("Please provide both City of Birth and Current City");
+                setIsSubmitting(false);
+                return;
+            }
 
             const birthDate = data.birthDate;
             const birthTime = data.birthTime || "";
             const isTimeKnown = Boolean(birthTime && birthTime.trim() !== "");
 
-            // Create birthDateTime, stripping timezone and handling missing time
+            // Create birthDateTime using the same utility as report creation
             const birthDateTime = createBirthDateTime(birthDate, birthTime);
 
-            // Get user's timezone (browser default)
+            // Get timezones directly from library using city names
+            const birthCityResults = cityTimezones.findFromCityStateProvince(
+                data.birthCity
+            );
+            const currentCityResults = cityTimezones.findFromCityStateProvince(
+                data.currentCity
+            );
+
+            // Use first match's timezone, fallback to browser timezone
             const birthTimezone =
+                birthCityResults[0]?.timezone ||
+                Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const currentTimezone =
+                currentCityResults[0]?.timezone ||
                 Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-            const payload = {
-                birthDateTime,
-                gender: data.gender as "male" | "female",
-                birthTimezone: birthTimezone,
+            // Store complete user data (name defaults to "Anonymous" on backend)
+            const completeUserData: CreateUserData = {
+                fullName: "Anonymous", // Default name, can be updated later
+                birthDate: formatBirthDateToISO(birthDateTime), // Format as ISO string without timezone (YYYY-MM-DDTHH:mm:ss)
+                birthLocation: data.birthCity,
+                birthTimezone,
+                currentLocation: data.currentCity,
+                currentTimezone,
                 isTimeKnown,
+                gender: data.gender as "male" | "female",
             };
 
-            // Call API to create report
-            const result = await createPersonalReport(payload);
+            // Call API to create user (returns {user, tokens})
+            const authResponse = await createUser(completeUserData);
 
-            // Redirect to the report page with the code
-            // Assuming the API returns a code or id
-            const reportCode = result.code || result.id;
-            router.push(`/personal/${reportCode}`);
+            // Sign in with NextAuth using the returned tokens
+            await signInWithCredentials({
+                accessToken: authResponse.tokens.access.token,
+                refreshToken: authResponse.tokens.refresh.token,
+                accessTokenExpires:
+                    authResponse.tokens.access.expires.toString(),
+                refreshTokenExpires:
+                    authResponse.tokens.refresh.expires.toString(),
+                userId: authResponse.user.id,
+            });
+
+            // Redirect to /me page
+            router.push("/me");
         } catch (error) {
-            console.error("Error creating report:", error);
-            // TODO: Add error handling/display to user
+            console.error("Error creating user:", error);
+            alert("An error occurred. Please try again.");
             setIsSubmitting(false);
         }
     };
@@ -224,6 +289,205 @@ export default function TeaserSection() {
                             </div>
                         </div>
 
+                        {/* City Fields */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                            <div className="text-left group">
+                                <ComboBox
+                                    id="birthCity"
+                                    name="birthCity"
+                                    isRequired
+                                    allowsCustomValue
+                                    onSelectionChange={(key) => {
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            birthCity: key ? String(key) : "",
+                                        }));
+                                    }}
+                                    inputValue={formData.birthCity}
+                                    onInputChange={(value) => {
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            birthCity: value,
+                                        }));
+                                        // Filter cities based on input
+                                        if (value.length > 0) {
+                                            const results =
+                                                cityTimezones.findFromCityStateProvince(
+                                                    value
+                                                );
+                                            const suggestions = results
+                                                .slice(0, 30)
+                                                .map((city, index) => {
+                                                    // For US cities with state_ansi, use "City, State"
+                                                    // For other cities, use "City, Country"
+                                                    let label: string;
+                                                    if (city.state_ansi) {
+                                                        label = `${city.city}, ${city.state_ansi}`;
+                                                    } else {
+                                                        label = `${city.city}, ${city.country}`;
+                                                    }
+                                                    return {
+                                                        id: `${city.city}-${
+                                                            city.province ||
+                                                            city.country
+                                                        }-${index}`,
+                                                        label,
+                                                        timezone: city.timezone,
+                                                    };
+                                                });
+                                            setBirthCitySuggestions(suggestions);
+                                        } else {
+                                            setBirthCitySuggestions([]);
+                                        }
+                                    }}
+                                    className="w-full"
+                                >
+                                    <Label
+                                        htmlFor="birthCity"
+                                        className="block text-[10px] tracking-widest font-bold text-slate-400 mb-2 uppercase"
+                                    >
+                                        City of Birth
+                                    </Label>
+                                    <ComboBox.InputGroup>
+                                        <Input
+                                            className="w-full bg-transparent border-b border-slate-300 px-0 py-2 text-xl sm:text-2xl font-serif text-slate-900 focus:border-slate-900 focus:outline-none transition-colors rounded-none"
+                                            placeholder="e.g., Seoul, South Korea"
+                                        />
+                                        <ComboBox.Trigger />
+                                    </ComboBox.InputGroup>
+                                    <ComboBox.Popover className="bg-white/90 backdrop-blur-md border border-slate-100 shadow-xl rounded-none">
+                                        <ListBox className="p-0">
+                                            {birthCitySuggestions.length > 0 ? (
+                                                birthCitySuggestions.map(
+                                                    (city) => (
+                                                        <ListBox.Item
+                                                            key={city.id}
+                                                            id={city.label}
+                                                            textValue={city.label}
+                                                            className="px-6 py-4 hover:bg-slate-50 font-serif text-slate-700 cursor-pointer outline-none"
+                                                        >
+                                                            {city.label}
+                                                            <ListBox.ItemIndicator />
+                                                        </ListBox.Item>
+                                                    )
+                                                )
+                                            ) : (
+                                                <ListBox.Item
+                                                    id="empty"
+                                                    textValue="Start typing to search cities..."
+                                                    className="px-6 py-4 text-sm text-slate-500 font-serif italic cursor-default"
+                                                    isDisabled
+                                                >
+                                                    Start typing to search
+                                                    cities...
+                                                </ListBox.Item>
+                                            )}
+                                        </ListBox>
+                                    </ComboBox.Popover>
+                                    <FieldError className="text-xs text-red-500 mt-2 font-serif italic" />
+                                </ComboBox>
+                            </div>
+
+                            <div className="text-left group">
+                                <ComboBox
+                                    id="currentCity"
+                                    name="currentCity"
+                                    isRequired
+                                    allowsCustomValue
+                                    onSelectionChange={(key) => {
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            currentCity: key ? String(key) : "",
+                                        }));
+                                    }}
+                                    inputValue={formData.currentCity}
+                                    onInputChange={(value) => {
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            currentCity: value,
+                                        }));
+                                        // Filter cities based on input
+                                        if (value.length > 0) {
+                                            const results =
+                                                cityTimezones.findFromCityStateProvince(
+                                                    value
+                                                );
+                                            const suggestions = results
+                                                .slice(0, 30)
+                                                .map((city, index) => {
+                                                    // For US cities with state_ansi, use "City, State"
+                                                    // For other cities, use "City, Country"
+                                                    let label: string;
+                                                    if (city.state_ansi) {
+                                                        label = `${city.city}, ${city.state_ansi}`;
+                                                    } else {
+                                                        label = `${city.city}, ${city.country}`;
+                                                    }
+                                                    return {
+                                                        id: `${city.city}-${
+                                                            city.province ||
+                                                            city.country
+                                                        }-${index}`,
+                                                        label,
+                                                        timezone: city.timezone,
+                                                    };
+                                                });
+                                            setCurrentCitySuggestions(
+                                                suggestions
+                                            );
+                                        } else {
+                                            setCurrentCitySuggestions([]);
+                                        }
+                                    }}
+                                    className="w-full"
+                                >
+                                    <Label
+                                        htmlFor="currentCity"
+                                        className="block text-[10px] tracking-widest font-bold text-slate-400 mb-2 uppercase"
+                                    >
+                                        Current City
+                                    </Label>
+                                    <ComboBox.InputGroup>
+                                        <Input
+                                            className="w-full bg-transparent border-b border-slate-300 px-0 py-2 text-xl sm:text-2xl font-serif text-slate-900 focus:border-slate-900 focus:outline-none transition-colors rounded-none"
+                                            placeholder="e.g., New York, NY"
+                                        />
+                                        <ComboBox.Trigger />
+                                    </ComboBox.InputGroup>
+                                    <ComboBox.Popover className="bg-white/90 backdrop-blur-md border border-slate-100 shadow-xl rounded-none">
+                                        <ListBox className="p-0">
+                                            {currentCitySuggestions.length > 0 ? (
+                                                currentCitySuggestions.map(
+                                                    (city) => (
+                                                        <ListBox.Item
+                                                            key={city.id}
+                                                            id={city.label}
+                                                            textValue={city.label}
+                                                            className="px-6 py-4 hover:bg-slate-50 font-serif text-slate-700 cursor-pointer outline-none"
+                                                        >
+                                                            {city.label}
+                                                            <ListBox.ItemIndicator />
+                                                        </ListBox.Item>
+                                                    )
+                                                )
+                                            ) : (
+                                                <ListBox.Item
+                                                    id="empty"
+                                                    textValue="Start typing to search cities..."
+                                                    className="px-6 py-4 text-sm text-slate-500 font-serif italic cursor-default"
+                                                    isDisabled
+                                                >
+                                                    Start typing to search
+                                                    cities...
+                                                </ListBox.Item>
+                                            )}
+                                        </ListBox>
+                                    </ComboBox.Popover>
+                                    <FieldError className="text-xs text-red-500 mt-2 font-serif italic" />
+                                </ComboBox>
+                            </div>
+                        </div>
+
                         {/* --- SUBMIT BUTTON --- */}
                         <div className="pt-8">
                             <button
@@ -234,8 +498,8 @@ export default function TeaserSection() {
                                 <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-slate-800 via-slate-900 to-black opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                                 <span className="relative flex items-center gap-3 text-lg">
                                     {isSubmitting
-                                        ? "Calculating..."
-                                        : "Calculate Analysis"}
+                                        ? "Creating Profile..."
+                                        : "Get Started"}
                                 </span>
                             </button>
                             <p className="mt-6 text-[10px] uppercase tracking-widest text-slate-400">

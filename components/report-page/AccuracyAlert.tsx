@@ -14,8 +14,7 @@ export default function AccuracyAlert({ input }: AccuracyAlertProps) {
 
     // Check if we should show the alert
     const isTimeMissing = input ? !input.isTimeKnown : false;
-    const isCityMissing = input ? !input.birthCity : false;
-    const shouldShow = (isTimeMissing || isCityMissing) && !dismissed;
+    const shouldShow = (isTimeMissing) && !dismissed;
 
     if (!shouldShow) return null;
 
@@ -23,9 +22,7 @@ export default function AccuracyAlert({ input }: AccuracyAlertProps) {
     if (isTimeMissing) {
         missingItems.push("Birth time affects your Hour Pillar and daily energy patterns");
     }
-    if (isCityMissing) {
-        missingItems.push("Birth location affects timezone calculations and chart precision");
-    }
+
 
     const handleDismiss = () => {
         setDismissed(true);

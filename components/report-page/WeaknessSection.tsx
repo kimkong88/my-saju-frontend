@@ -1,5 +1,12 @@
+"use client";
+
+import { useState } from "react";
+import { ArrowRight, Sparkles } from "lucide-react";
+import SubscriptionModal from "@/components/modals/SubscriptionModal";
+
 export default function WeaknessSection({
     weaknesses,
+    isPremium = false,
 }: {
     weaknesses: {
         title: string;
@@ -7,7 +14,44 @@ export default function WeaknessSection({
         description: string;
         isPersonal?: boolean;
     }[];
+    isPremium?: boolean;
 }) {
+    const [subscriptionModalOpen, setSubscriptionModalOpen] = useState(false);
+
+    const handleSubscribe = () => {
+        // TODO: Implement subscription flow
+        console.log("Subscribe clicked - $4.99/month");
+        setSubscriptionModalOpen(false);
+    };
+
+    const handleUnlock = () => {
+        if (!isPremium) {
+            setSubscriptionModalOpen(true);
+        }
+    };
+
+    /**
+     * Obfuscate text by replacing characters with dots/dashes while preserving structure
+     */
+    const obfuscateText = (text: string): string => {
+        return text
+            .split('')
+            .map((char) => {
+                if (char === ' ') return ' ';
+                if (char === '\n') return '\n';
+                if (char === '.') return '.';
+                if (char === ',') return ',';
+                if (char === '!') return '!';
+                if (char === '?') return '?';
+                if (char === '-') return '-';
+                // Replace letters and numbers with dots/dashes
+                return Math.random() > 0.5 ? '•' : '▪';
+            })
+            .join('');
+    };
+
+    // Show first item fully, rest blurred/obfuscated for free users
+    const displayedWeaknesses = weaknesses;
     return (
         <section
             id="weaknesses"
@@ -32,10 +76,13 @@ export default function WeaknessSection({
                 </div>
 
                 {/* --- VERTICAL STACK: Subtle Refined Stagger --- */}
-                {weaknesses.length > 0 ? (
+                {displayedWeaknesses.length > 0 ? (
                     <div className="space-y-8 md:space-y-12">
-                        {weaknesses.map((weakness, index) => {
+                        {displayedWeaknesses.map((weakness, index) => {
                             const isEven = index % 2 === 0;
+                            const isFirstItem = index === 0;
+                            const shouldShow = isPremium || isFirstItem;
+                            
                             return (
                                 <div
                                     key={weakness.title}
@@ -45,39 +92,92 @@ export default function WeaknessSection({
                                             : "max-w-4xl md:ml-6 lg:ml-12"
                                     }`}
                                 >
-                                    {/* Number + Icon Row */}
-                                    <div className="flex items-center gap-4 mb-6">
-                                        <div className="text-3xl md:text-4xl font-medium text-slate-200 group-hover:text-slate-300 transition-colors">
-                                            {String(index + 1).padStart(2, "0")}
-                                        </div>
-                                        <div className="text-2xl md:text-3xl md:grayscale md:opacity-40 md:group-hover:opacity-100 md:group-hover:grayscale-0 transition-all duration-300">
-                                            {weakness.emoji}
-                                        </div>
-                                        <div className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent group-hover:from-slate-300 transition-colors" />
-                                    </div>
+                                    {shouldShow ? (
+                                        <>
+                                            {/* Number + Icon Row */}
+                                            <div className="flex items-center gap-4 mb-6">
+                                                <div className="text-3xl md:text-4xl font-medium text-slate-200 group-hover:text-slate-300 transition-colors">
+                                                    {String(index + 1).padStart(2, "0")}
+                                                </div>
+                                                <div className="text-2xl md:text-3xl md:grayscale md:opacity-40 md:group-hover:opacity-100 md:group-hover:grayscale-0 transition-all duration-300">
+                                                    {weakness.emoji}
+                                                </div>
+                                                <div className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent group-hover:from-slate-300 transition-colors" />
+                                            </div>
 
-                                    {/* Title with Personal Badge */}
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <h3 className="text-2xl md:text-3xl font-medium text-slate-900 tracking-tight">
-                                            {weakness.title}
-                                        </h3>
-                                        {weakness.isPersonal && (
-                                            <span className="text-xs font-medium text-slate-600 uppercase tracking-wider px-2.5 py-1 bg-slate-50 border border-slate-300 rounded-sm">
-                                                Personal
-                                            </span>
-                                        )}
-                                    </div>
+                                            {/* Title with Personal Badge */}
+                                            <div className="flex items-center gap-3 mb-3">
+                                                <h3 className="text-2xl md:text-3xl font-medium text-slate-900 tracking-tight">
+                                                    {weakness.title}
+                                                </h3>
+                                                {weakness.isPersonal && (
+                                                    <span className="text-xs font-medium text-slate-600 uppercase tracking-wider px-2.5 py-1 bg-slate-50 border border-slate-300 rounded-sm">
+                                                        Personal
+                                                    </span>
+                                                )}
+                                            </div>
 
-                                    {/* Description */}
-                                    <p className="text-base md:text-lg text-slate-600 leading-relaxed">
-                                        {weakness.description}
-                                    </p>
+                                            {/* Description - Visible for first item or premium */}
+                                            <p className="text-base md:text-lg text-slate-600 leading-relaxed">
+                                                {weakness.description}
+                                            </p>
+                                        </>
+                                    ) : (
+                                        /* Blurred/Obfuscated item - no title shown */
+                                        <div className="space-y-6 blur-sm pointer-events-none select-none opacity-60">
+                                            {/* Number + Icon Row - obfuscated */}
+                                            <div className="flex items-center gap-4 mb-6">
+                                                <div className="text-3xl md:text-4xl font-medium text-slate-200">
+                                                    {String(index + 1).padStart(2, "0")}
+                                                </div>
+                                                <div className="text-2xl md:text-3xl opacity-40">
+                                                    {weakness.emoji}
+                                                </div>
+                                                <div className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent" />
+                                            </div>
+                                            {/* Title - obfuscated */}
+                                            <div className="mb-3">
+                                                <h3 className="text-2xl md:text-3xl font-medium text-slate-900 tracking-tight">
+                                                    {obfuscateText(weakness.title)}
+                                                </h3>
+                                            </div>
+                                            {/* Description - obfuscated */}
+                                            <p className="text-base md:text-lg text-slate-600 leading-relaxed">
+                                                {obfuscateText(weakness.description)}
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })}
+
+                        {/* Single Unlock Button for Free Users - After all items */}
+                        {!isPremium && displayedWeaknesses.length > 1 && (
+                            <div className="relative mt-8 md:mt-12">
+                                <div className="flex items-center justify-center">
+                                    <button
+                                        onClick={handleUnlock}
+                                        className="cursor-pointer bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-8 py-4 flex items-center gap-3 group border-2 border-slate-900 rounded-sm hover:shadow-2xl transition-all duration-300 shadow-lg"
+                                    >
+                                        <Sparkles className="w-5 h-5 text-white/60 group-hover:text-white transition-colors" />
+                                        <span className="text-sm font-medium text-white">
+                                            Unlock {displayedWeaknesses.length - 1} More Weakness{displayedWeaknesses.length - 1 > 1 ? "es" : ""}
+                                        </span>
+                                        <ArrowRight className="w-4 h-4 text-white" />
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 ) : null}
             </div>
+
+            {/* Subscription Modal */}
+            <SubscriptionModal
+                isOpen={subscriptionModalOpen}
+                onOpenChange={setSubscriptionModalOpen}
+                onSubscribe={handleSubscribe}
+            />
         </section>
     );
 }

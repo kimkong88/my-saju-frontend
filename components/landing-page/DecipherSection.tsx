@@ -13,7 +13,7 @@ export default function DecipherSection() {
                     </h2>
 
                     <p className="text-sm md:text-base text-slate-700 mb-12 leading-relaxed max-w-md">
-                        Life operates in recurring cycles. PulseMap projects
+                        Life operates in recurring cycles. Unstar projects
                         your birth chart across your entire lifespan to identify
                         the{" "}
                         <strong className="text-slate-900 font-semibold italic">

@@ -41,18 +41,11 @@ interface CompatibilityHeroSectionProps {
             element: string;
         };
     };
-    score: {
-        overall: number;
-        rating: string;
-        headline: string;
-    };
-    pairingTitle?: {
+    pairingTitle: {
         name: string;
-        subtitle?: string;
-        elementBasis?: string;
-        dominantTheme?: string;
+        subtitle: string;
     };
-    rarity?: {
+    rarity: {
         oneIn: number;
         percentile: number;
         description: string;

@@ -245,7 +245,7 @@ export default async function Image({
                             <circle cx="24" cy="24" r="6" fill="#0f172a" />
                         </svg>
                         <span style={{ letterSpacing: "-0.01em" }}>
-                            PulseMap
+                            Unstar
                         </span>
                     </div>
                 </div>

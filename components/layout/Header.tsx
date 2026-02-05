@@ -74,6 +74,13 @@ export default function Header() {
                 FAQ
             </a>
             <Link
+                href="/signin"
+                className="hover:text-slate-900 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+            >
+                Sign In
+            </Link>
+            <Link
                 href="/signup"
                 className="hover:text-slate-900 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
@@ -85,7 +92,7 @@ export default function Header() {
                 className="px-6 py-2.5 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all font-semibold"
                 onClick={(e) => handleHashClick(e, "#teaser")}
             >
-                Get Report
+                Get Started
             </a>
         </>
     );
@@ -99,6 +106,13 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(false)}
             >
                 Home
+            </Link>
+            <Link
+                href="/signup"
+                className="hover:text-slate-900 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+            >
+                Sign Up
             </Link>
             <Link
                 href="/#teaser"
@@ -204,6 +218,13 @@ export default function Header() {
                                         onClick={() => setMobileMenuOpen(false)}
                                     >
                                         Home
+                                    </Link>
+                                    <Link
+                                        href="/signup"
+                                        className="block py-2 hover:text-slate-900 transition-colors"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                    >
+                                        Sign Up
                                     </Link>
                                     <Link
                                         href="/#teaser"

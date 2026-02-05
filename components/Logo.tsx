@@ -25,7 +25,7 @@ export default function Logo() {
                 <circle cx="24" cy="24" r="6" fill="white" />
             </svg>
             <span className="font-bold text-xl md:text-2xl tracking-tight">
-                PulseMap
+                Unstar
             </span>
         </div>
     );

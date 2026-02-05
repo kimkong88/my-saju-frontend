@@ -110,16 +110,14 @@ export default function ShareSection({
 
     const shareUrl = `${
         typeof window !== "undefined" ? window.location.origin : ""
-    }/share/${reportCode}`;
+    }/s/${reportCode}`;
     const compatUrl = `${
         typeof window !== "undefined" ? window.location.origin : ""
-    }/personal/${reportCode}/compat`;
-    // Remove hash fragments from URL (e.g., #share)
+    }/compat/${reportCode}`;
+    // Share Full Report uses unified /s/code format
     const reportUrl = `${
-        typeof window !== "undefined"
-            ? window.location.origin + window.location.pathname
-            : ""
-    }`;
+        typeof window !== "undefined" ? window.location.origin : ""
+    }/s/${reportCode}`;
 
     const shareText = `I'm ${identity.title} (${
         identity.code
@@ -169,14 +167,14 @@ export default function ShareSection({
 
     const handleEmailShare = () => {
         const subject = encodeURIComponent(
-            `My PulseMap Report - ${identity.title}`
+            `My Unstar Report - ${identity.title}`
         );
         const body = encodeURIComponent(
             `I'm ${identity.title} (${
                 identity.code
             }) - 1 in ${rarity.overall.oneIn.toLocaleString()}.\n\n` +
                 `View my full report: ${reportUrl}\n\n` +
-                `Find your PulseMap type: ${
+                `Find your Unstar type: ${
                     typeof window !== "undefined" ? window.location.origin : ""
                 }`
         );

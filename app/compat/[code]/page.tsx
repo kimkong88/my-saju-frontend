@@ -1,38 +1,30 @@
 import type { Metadata } from "next";
-import CompatibilityHeroSection from "@/components/compat-page/CompatibilityHeroSection";
-import HowYouMatchSection from "@/components/compat-page/HowYouMatchSection";
-import CompatibilityContentSection from "@/components/compat-page/CompatibilityContentSection";
-import CompatibilityNextSection from "@/components/compat-page/CompatibilityNextSection";
-import CompatibilityShareSection from "@/components/compat-page/CompatibilityShareSection";
-import { getReport } from "@/app/actions/reportAction";
-import { notFound } from "next/navigation";
-import type {
-    CompatibilityReport,
-    SpecialConnection,
-    SharedBehavior,
-} from "@/types/report";
+import CompatibilityForm from "@/components/compat-page/CompatibilityForm";
+import { getUserByCode } from "@/app/actions/userAction";
+import { notFound, redirect } from "next/navigation";
+import { auth } from "@/auth";
+import type { PersonalReport, ReportInput } from "@/types/report";
 
 export async function generateMetadata({
     params,
 }: {
     params: Promise<{ code: string }>;
 }): Promise<Metadata> {
-    // TODO: Replace with actual API call
     const { code } = await params;
-    const response = await getReport(code);
-    if (!response || response.type !== "compatibility") {
+
+    try {
+        const userData = await getUserByCode(code);
+        return {
+            title: `Compatibility Check with ${userData.identity.title} | Unstar`,
+            description: `Check compatibility with ${userData.identity.title}.`,
+            robots: {
+                index: true,
+                follow: true,
+            },
+        };
+    } catch {
         notFound();
     }
-    const compat = response.data;
-
-    return {
-        title: `${compat.person1.identity.title} & ${compat.person2.identity.title} - ${compat.score.overall}/100 Compatibility | PulseMap`,
-        description: `${compat.score.headline}. Compatibility score: ${compat.score.overall}/100. ${compat.rarity.description}`,
-        robots: {
-            index: false,
-            follow: false,
-        },
-    };
 }
 
 export default async function CompatibilityPage({
@@ -42,63 +34,44 @@ export default async function CompatibilityPage({
 }) {
     const { code } = await params;
 
-    const response = await getReport(code);
-    if (!response || response.type !== "compatibility") {
+    // Check if user is logged in - if so, redirect to /compatibility
+    const session = await auth();
+    if (session) {
+        redirect("/compatibility");
+    }
+
+    // Fetch user data - if not found, notFound() will be called
+    let userData;
+    try {
+        userData = await getUserByCode(code);
+    } catch {
         notFound();
     }
-    const compat = response.data as CompatibilityReport;
 
-    // Map new data structure to component props
-    // Person2 is the viewer - write from their perspective
-    const strengths = [
-        ...(compat.specialConnections || []).map((conn: SpecialConnection) => ({
-            title: conn.title,
-            emoji: conn.emoji,
-            rarity: conn.rarity,
-            description: conn.description,
-        })),
-        ...(compat.sharedBehaviors || []).map((behavior: SharedBehavior) => ({
-            title: behavior.title,
-            emoji: behavior.emoji,
-            description: `${behavior.description} ${behavior.impact || ""}`,
-        })),
-    ];
+    // Convert user data to report format for CompatibilityForm
+    const report: PersonalReport = {
+        identity: userData.identity,
+        rarity: userData.rarity
+            ? { overall: { oneIn: userData.rarity.oneIn, description: "" } }
+            : undefined,
+    } as PersonalReport;
 
-    const sharedTraits = compat.sharedTraits
-        ? {
-              title: "You Both Share",
-              items: compat.sharedTraits,
-          }
-        : undefined;
+    const input: ReportInput = {
+        birthDateTime: userData.birthDateTime,
+        gender: userData.gender,
+        birthTimezone: userData.birthTimezone,
+        isTimeKnown: userData.isTimeKnown,
+        birthLocation: userData.birthLocation,
+        currentLocation: userData.currentLocation,
+    };
 
+    // Return JSX outside try/catch to allow proper error boundary handling
     return (
-        <div className="pb-20 xl:pb-0">
-            <CompatibilityHeroSection
-                person1={compat.person1}
-                person2={compat.person2}
-                score={compat.score}
-                pairingTitle={compat.pairingTitle}
-                rarity={compat.rarity}
-            />
-            <HowYouMatchSection
-                introduction={compat.introduction}
-                scoreBreakdown={compat.scoreBreakdown}
-                rating={compat.score.rating}
-            />
-            <CompatibilityContentSection
-                overview={compat.overview}
-                strengths={strengths}
-                sharedTraits={sharedTraits}
-            />
-            <CompatibilityShareSection
-                person1={compat.person1}
-                person2={compat.person2}
-                score={compat.score}
-                rarity={compat.rarity}
-                pairingTitle={compat.pairingTitle}
-                compatCode={code}
-            />
-            <CompatibilityNextSection />
-        </div>
+        <CompatibilityForm
+            report={report}
+            input={input}
+            userName={userData.fullName || undefined}
+            userCode={code}
+        />
     );
 }

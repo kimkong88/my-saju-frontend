@@ -5,7 +5,7 @@ export default function Footer() {
                 <div className="space-y-6">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                         <p className="text-sm text-slate-500">
-                            &copy; {new Date().getFullYear()} PulseMap. All
+                            &copy; {new Date().getFullYear()} Unstar. All
                             rights reserved.
                         </p>
                         <div className="flex flex-wrap items-center gap-4 text-sm text-slate-400">

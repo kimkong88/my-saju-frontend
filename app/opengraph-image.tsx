@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 // Route segment config
 export const runtime = "edge";
-export const alt = "PulseMap - Beyond Astrology";
+export const alt = "Unstar - Beyond Astrology";
 export const size = {
     width: 1200,
     height: 630,
@@ -89,7 +89,7 @@ export default async function Image() {
                             letterSpacing: "-0.01em",
                         }}
                     >
-                        PulseMap
+                        Unstar
                     </span>
                 </div>
 

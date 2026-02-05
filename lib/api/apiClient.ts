@@ -1,3 +1,5 @@
+import { auth } from "@/auth";
+
 interface RetryConfig {
     maxRetries?: number;
     retryDelay?: number;
@@ -28,48 +30,35 @@ export async function apiClient(
 
     for (let attempt = 0; attempt <= config.maxRetries!; attempt++) {
         try {
-            const session = undefined; // TODO: add session
+            // Get session - this will trigger jwt callback if token needs refresh
+            // According to Auth.js guide, refresh should ONLY happen in JWT callback
+            // The mutex in auth.ts prevents concurrent refreshes
+            const session = await auth();
+            const sessionWithTokens = session as {
+                accessToken?: string;
+            } | null;
 
-            const isFormData =
-                typeof FormData !== "undefined" &&
-                options.body instanceof FormData;
+            // Build headers - only add Authorization if we have a valid token
+            const headers: Record<string, string> = {
+                ...(options.headers as Record<string, string>),
+                "Content-Type": "application/json",
+            };
 
-            // Build headers so that:
-            // - We add Authorization when we have a session
-            // - We DO NOT set Content-Type for FormData (browser will set boundary)
-            // - We default to application/json only when not FormData and header not provided
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const hasAccessToken = Boolean((session as any)?.accessToken);
-            const callerHeaders = (options.headers || {}) as Record<
-                string,
-                string
-            >;
-            const callerProvidedContentType = Object.keys(callerHeaders)
-                .map((h) => h.toLowerCase())
-                .includes("content-type");
-
-            const headers: Record<string, string> = {};
-            if (hasAccessToken) {
-                /* eslint-disable */
-                headers["Authorization"] = `Bearer ${
-                    (session as any).accessToken
-                }`;
-                /* eslint-enable */
-            }
-            // Copy over any caller-provided headers
-            for (const [key, value] of Object.entries(callerHeaders)) {
-                headers[key] = value as string;
-            }
-            // Set default content-type for non-FormData when not provided
-            if (!isFormData && !callerProvidedContentType) {
-                headers["Content-Type"] = "application/json";
+            // Only add Authorization header if we have a valid access token
+            if (sessionWithTokens?.accessToken) {
+                headers.Authorization = `Bearer ${sessionWithTokens.accessToken}`;
             }
 
             const response = await fetch(url, {
                 ...options,
                 headers,
             });
+
+            // If we get 401, the token might be expired
+            // JWT callback will handle refresh automatically when auth() is called
+            // If refresh fails, JWT callback returns invalid token, session returns null
+            // In that case, we just return the 401 response (no retry)
+            // Client will see null session and redirect naturally
 
             // If response is ok or not retryable, return it
             if (response.ok || !shouldRetry(response.status, config.retryOn!)) {

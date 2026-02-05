@@ -1,12 +1,14 @@
 import Link from "next/link";
-import type { WhoYouAre, SpecialTrait } from "@/types/report";
+import type { WhoYouAre, SpecialTrait, Rarity } from "@/types/report";
 
 export default function WhoYouAreSection({
     whoYouAre,
     specialTraits,
+    rarity,
 }: {
     whoYouAre: WhoYouAre;
     specialTraits: SpecialTrait[];
+    rarity?: Rarity;
 }) {
     return (
         <section id="who-you-are" className="py-24 md:py-40 px-6 xl:px-0">
@@ -39,7 +41,7 @@ export default function WhoYouAreSection({
                     <>
                         <div className="mb-8">
                             <h3 className="text-2xl font-semibold text-slate-900 mb-4 tracking-tight">
-                                Your Special Traits
+                                What Makes You Special
                             </h3>
                             {specialTraits.length >= 2 ? (
                                 <p className="text-base text-slate-700 leading-relaxed max-w-3xl mb-2">
@@ -60,6 +62,32 @@ export default function WhoYouAreSection({
                         </div>
                         {/* --- GRID: Structural & Clean --- */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                            {/* Rarity Explanation Card - Always show if rarity exists */}
+                            {rarity && (
+                                <div className="bg-white p-8 md:p-10 flex flex-col justify-between border border-slate-200 rounded-sm">
+                                    <div>
+                                        <div className="flex justify-between items-start mb-6">
+                                            <div className="text-2xl">💎</div>
+                                            <span className="text-xs font-mono text-slate-600 uppercase tracking-wider whitespace-nowrap flex-shrink-0 pt-1 font-semibold">
+                                                Your Rarity
+                                            </span>
+                                        </div>
+
+                                        <h4 className="text-xl font-medium text-slate-900 tracking-tight mb-4">
+                                            1 in {rarity.overall.oneIn.toLocaleString()}
+                                        </h4>
+
+                                        <p className="text-sm text-slate-500 leading-relaxed">
+                                            This means your exact birth chart combination
+                                            appears in only 1 out of{" "}
+                                            {rarity.overall.oneIn.toLocaleString()} people.
+                                            The higher the number, the more unique your
+                                            chart is.
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
                             {specialTraits.map((item) => (
                                 <div
                                     key={item.name}

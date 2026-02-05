@@ -191,6 +191,8 @@ export interface ReportInput {
     birthDateTime: string;
     birthTimezone: string;
     birthCity?: string;
+    birthLocation?: string; // City of birth
+    currentLocation?: string; // Current city
     isTimeKnown: boolean;
 }
 
@@ -222,9 +224,36 @@ export interface PersonIdentity {
     polarity: "Yin" | "Yang";
 }
 
+export interface ElementDistributionElement {
+    element: string; // "WOOD", "FIRE", "EARTH", "METAL", "WATER"
+    count: number;
+    percentage: number;
+    emoji: string;
+}
+
+export interface PersonElementDistribution {
+    elements: ElementDistributionElement[];
+    dominant: string[];
+    missing: string[];
+}
+
+export interface ElementDistributionElement {
+    element: string; // "WOOD", "FIRE", "EARTH", "METAL", "WATER"
+    count: number;
+    percentage: number;
+    emoji: string;
+}
+
+export interface PersonElementDistribution {
+    elements: ElementDistributionElement[];
+    dominant: string[];
+    missing: string[];
+}
+
 export interface Person {
     gender: "male" | "female";
     identity: PersonIdentity;
+    elementDistribution: PersonElementDistribution;
 }
 
 export interface CompatibilityScore {
@@ -296,6 +325,7 @@ export interface ChartPerson {
 export interface ChartInteraction {
     visual: string;
     type: string;
+    description?: string;
 }
 
 export interface FullChartPillar {
@@ -319,7 +349,7 @@ export interface SpecialConnection {
     title: string;
     emoji: string;
     rarity: string;
-    category: string;
+    category: "rare-trait" | "polarity-balance" | "element-harmony" | "pattern-synergy";
     description: string;
 }
 
@@ -356,7 +386,26 @@ export interface ElementInteraction {
 
 export interface TechnicalBasisCompatibility {
     elementInteraction: ElementInteraction;
-    traditionalFactors: unknown[];
+    traditionalFactors: string[];
+}
+
+export interface CompatibilitySubCategory {
+    title: string;
+    person1Analysis: string;
+    person2Analysis: string;
+    result: {
+        score: "Highly Compatible" | "Compatible" | "Neutral" | "Challenging" | "Highly Challenging";
+        match: string;
+        analysis: string;
+        actionableTip?: string;
+    };
+}
+
+export interface CompatibilityCategory {
+    category: "romance" | "work" | "lifestyle" | "communication";
+    emoji: string;
+    title: string;
+    subCategories: CompatibilitySubCategory[];
 }
 
 /**
@@ -365,22 +414,25 @@ export interface TechnicalBasisCompatibility {
  * This is the main type representing a full compatibility report
  * returned from the API.
  */
+export interface PairingExplanation {
+    soWhat: string;
+    summary: string;
+    implications: string[];
+}
+
 export interface CompatibilityReport {
     pairingTitle: PairingTitle;
     introduction: string;
     person1: Person;
     person2: Person;
-    score: CompatibilityScore;
     rarity: CompatibilityRarity;
+    categories: CompatibilityCategory[];
     overview: string;
-    scoreBreakdown: ScoreBreakdown;
     chartDisplay: ChartDisplay;
-    sharedTraits: string[];
     specialConnections: SpecialConnection[];
-    dynamics: Dynamic[];
-    sharedBehaviors: SharedBehavior[];
-    growthAreas: GrowthArea[];
-    technicalBasis: TechnicalBasisCompatibility;
+    technicalBasis?: TechnicalBasisCompatibility;
+    pairingExplanation?: PairingExplanation;
+    conclusion?: string;
     generatedAt: string;
-    reportType: string;
+    reportType: "compatibility-teaser" | "compatibility-premium";
 }

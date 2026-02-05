@@ -20,19 +20,14 @@ interface CompatibilityShareSectionProps {
             element: string;
         };
     };
-    score: {
-        overall: number;
-        rating: string;
-        headline: string;
-    };
-    rarity?: {
+    rarity: {
         oneIn: number;
         percentile: number;
         description: string;
     };
-    pairingTitle?: {
+    pairingTitle: {
         name: string;
-        subtitle?: string;
+        subtitle: string;
     };
     compatCode: string;
 }
@@ -112,7 +107,6 @@ function getElementBgStyle(element: string | undefined): React.CSSProperties {
 export default function CompatibilityShareSection({
     person1,
     person2,
-    score,
     rarity,
     pairingTitle,
 }: CompatibilityShareSectionProps) {
@@ -125,9 +119,7 @@ export default function CompatibilityShareSection({
             : ""
     }`;
 
-    const shareText = pairingTitle
-        ? `${pairingTitle.name} - ${score.overall}/100 Compatibility. Check your compatibility →`
-        : `${person1.identity.title} × ${person2.identity.title} - ${score.overall}/100 Compatibility. Check your compatibility →`;
+    const shareText = `${pairingTitle.name} - ${pairingTitle.subtitle}. Check your compatibility →`;
 
     const handleCopy = async (text: string, type: string) => {
         const success = await copyToClipboard(text);
@@ -181,7 +173,7 @@ export default function CompatibilityShareSection({
             `${
                 pairingTitle?.name ||
                 `${person1.identity.title} × ${person2.identity.title}`
-            } - ${score.overall}/100 Compatibility (${score.rating}).\n\n` +
+            } - ${pairingTitle.subtitle}.\n\n` +
                 `View full compatibility report: ${reportUrl}\n\n` +
                 `Check your compatibility: ${
                     typeof window !== "undefined" ? window.location.origin : ""
@@ -234,13 +226,8 @@ export default function CompatibilityShareSection({
                             {pairingTitle?.name ||
                                 `${person1.identity.title} × ${person2.identity.title}`}
                         </div>
-                        {pairingTitle?.subtitle && (
-                            <div className="text-base text-white/80 mb-3">
-                                {pairingTitle.subtitle}
-                            </div>
-                        )}
-                        <div className="text-base md:text-lg text-white/80 mb-2">
-                            {score.overall}/100 Compatibility • {score.rating}
+                        <div className="text-base text-white/80 mb-3">
+                            {pairingTitle.subtitle}
                         </div>
                         {rarity && (
                             <div className="text-sm text-white/70 border-t border-white/20 pt-4 mt-4">

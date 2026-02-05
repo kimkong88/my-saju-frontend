@@ -37,7 +37,7 @@ export async function generateMetadata({
     return {
         title: `${identity.title} (${
             identity.code
-        }) - 1 in ${rarity.overall.oneIn.toLocaleString()} | PulseMap`,
+        }) - 1 in ${rarity.overall.oneIn.toLocaleString()} | Unstar`,
         description: `I'm ${identity.title} (${
             identity.code
         }) - 1 in ${rarity.overall.oneIn.toLocaleString()}. Discover your unique personality signature from 10.3 million possible combinations.`,

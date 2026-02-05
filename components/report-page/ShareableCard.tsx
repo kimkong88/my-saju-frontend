@@ -32,7 +32,7 @@ export default function ShareableCard({
 }: ShareableCardProps) {
     const [copied, setCopied] = useState(false);
 
-    const shareUrl = `${window.location.origin}/share/${reportId}`;
+    const shareUrl = `${window.location.origin}/s/${reportId}`;
     const compatUrl = `${window.location.origin}/compat/${reportId}`;
 
     const shareText = `I'm ${identity.title} (${

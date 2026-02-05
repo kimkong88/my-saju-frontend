@@ -9,7 +9,7 @@ export default function FAQSection() {
         },
         {
             question: "How is this different from astrology or MBTI?",
-            answer: "While traditional astrology uses 12 zodiac signs and MBTI uses 16 personality types, PulseMap analyzes your unique birth coordinates across 10.3 million possible combinations. This means your chart is calculated, not categorized—revealing your precise rarity signature (like '1 in 1.3M') rather than placing you in a generic group. We also provide actionable forecasting tools, not just identity labels.",
+            answer: "While traditional astrology uses 12 zodiac signs and MBTI uses 16 personality types, Unstar analyzes your unique birth coordinates across 10.3 million possible combinations. This means your chart is calculated, not categorized—revealing your precise rarity signature (like '1 in 1.3M') rather than placing you in a generic group. We also provide actionable forecasting tools, not just identity labels.",
         },
         {
             question: "Do I need my exact birth time?",
@@ -17,7 +17,7 @@ export default function FAQSection() {
         },
         {
             question: "How accurate is this?",
-            answer: "PulseMap uses precise calculations based on your exact birth coordinates, analyzing 10.3 million possible combinations. While no system can predict the future with 100% accuracy, Bazi has been used for thousands of years to provide insights into personality patterns and life cycles. We recommend reading the 'Who You Are' section first—if it resonates with you, the rest of the report will likely be valuable.",
+            answer: "Unstar uses precise calculations based on your exact birth coordinates, analyzing 10.3 million possible combinations. While no system can predict the future with 100% accuracy, Bazi has been used for thousands of years to provide insights into personality patterns and life cycles. We recommend reading the 'Who You Are' section first—if it resonates with you, the rest of the report will likely be valuable.",
         },
         {
             question: "Is my data secure?",

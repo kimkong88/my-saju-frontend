@@ -1,10 +1,12 @@
 "use client";
 
 import {
+    ComboBox,
     DateField,
     DateInputGroup,
     FieldError,
     Form,
+    Input,
     Label,
     ListBox,
     Select,
@@ -17,8 +19,10 @@ import {
     createCompatibilityReport,
     CreateCompatibilityReportData,
 } from "@/app/actions/reportAction";
-import { createBirthDateTime } from "@/lib/utils/date";
+import { signInWithCredentials } from "@/app/actions/authAction";
+import { createBirthDateTime, formatBirthDateToISO } from "@/lib/utils/date";
 import type { PersonalReport, ReportInput } from "@/types/report";
+import cityTimezones from "city-timezones";
 
 // Simple Chevron Icon for perfect alignment
 const ChevronDownIcon = ({ className }: { className?: string }) => (
@@ -113,13 +117,35 @@ function getElementBgStyle(element: string | undefined): React.CSSProperties {
 
 export default function CompatibilityForm({
     report,
-    input,
+    input: _input,
+    userName,
+    userCode,
 }: {
     report: PersonalReport;
     input: ReportInput;
+    userName?: string; // User's full name (only show if not "Anonymous")
+    userCode: string; // Code of the user who shared their chart
 }) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formData, setFormData] = useState({
+        birthCity: "",
+        currentCity: "",
+    });
+    const [birthCitySuggestions, setBirthCitySuggestions] = useState<
+        Array<{
+            id: string;
+            label: string;
+            timezone: string;
+        }>
+    >([]);
+    const [currentCitySuggestions, setCurrentCitySuggestions] = useState<
+        Array<{
+            id: string;
+            label: string;
+            timezone: string;
+        }>
+    >([]);
 
     // Get user's timezone
     const getUserTimezone = (): string => {
@@ -145,7 +171,14 @@ export default function CompatibilityForm({
                 data[key] = value.toString();
             });
 
-            // Person2 data from form
+            // Validate city fields
+            if (!data.birthCity || !data.currentCity) {
+                alert("Please provide both City of Birth and Current City");
+                setIsSubmitting(false);
+                return;
+            }
+
+            // Person2 data from form (the person filling out the form)
             const person2BirthDate = data.birthDate;
             const person2BirthTime = data.birthTime || "";
             const person2IsTimeKnown = Boolean(
@@ -156,21 +189,32 @@ export default function CompatibilityForm({
                 person2BirthTime
             );
 
-            // Person1 data from input (shared chart)
-            const person1BirthDateTime = new Date(input.birthDateTime);
-            const person1IsTimeKnown = input.isTimeKnown || false;
+            // Get timezones from city names
+            const birthCityResults = cityTimezones.findFromCityStateProvince(
+                data.birthCity
+            );
+            const currentCityResults = cityTimezones.findFromCityStateProvince(
+                data.currentCity
+            );
+
+            // Use first match's timezone, fallback to browser timezone
+            const person2BirthTimezone =
+                birthCityResults[0]?.timezone || getUserTimezone();
+            const person2CurrentTimezone =
+                currentCityResults[0]?.timezone || getUserTimezone();
 
             const payload: CreateCompatibilityReportData = {
                 person1: {
-                    birthDateTime: person1BirthDateTime,
-                    gender: input.gender as "male" | "female",
-                    birthTimezone: input.birthTimezone || "Asia/Seoul",
-                    isTimeKnown: person1IsTimeKnown,
+                    code: userCode, // Person1's code (must exist)
                 },
                 person2: {
-                    birthDateTime: person2BirthDateTime,
+                    // No code provided - will create new user
+                    birthDateTime: formatBirthDateToISO(person2BirthDateTime),
                     gender: data.gender as "male" | "female",
-                    birthTimezone: getUserTimezone(),
+                    birthLocation: data.birthCity,
+                    birthTimezone: person2BirthTimezone,
+                    currentLocation: data.currentCity,
+                    currentTimezone: person2CurrentTimezone,
                     isTimeKnown: person2IsTimeKnown,
                 },
                 isTeaser: true,
@@ -179,10 +223,36 @@ export default function CompatibilityForm({
             // Call API to create compatibility report
             const result = await createCompatibilityReport(payload);
 
-            // Redirect to compatibility result page
-            // Assuming the API returns a code
-            const compatCode = result.code || result.id;
-            router.push(`/compat/${compatCode}`);
+            // Handle response - may include tokens if new user was created
+            if (result.tokens && result.user) {
+                // New user was created - log them in
+                // Map tokens from API response to signInWithCredentials format
+                const tokens = result.tokens;
+                await signInWithCredentials({
+                    accessToken: tokens.access?.token || tokens.accessToken,
+                    refreshToken: tokens.refresh?.token || tokens.refreshToken,
+                    accessTokenExpires:
+                        (
+                            tokens.access?.expires || tokens.accessTokenExpires
+                        )?.toString() || "",
+                    refreshTokenExpires:
+                        (
+                            tokens.refresh?.expires ||
+                            tokens.refreshTokenExpires
+                        )?.toString() || "",
+                    userId: result.user.id,
+                    accountId: result.user.accountId || null,
+                });
+            }
+
+            // Redirect to compatibility result page at /compatibility/[code]
+            // Response structure: { report: Report } or { user, tokens, report: Report }
+            const reportCode =
+                result.report?.code ||
+                result.report?.id ||
+                result.code ||
+                result.id;
+            router.push(`/compatibility/${reportCode}`);
         } catch (error) {
             console.error("Error creating compatibility report:", error);
             // TODO: Add error handling/display to user
@@ -199,8 +269,20 @@ export default function CompatibilityForm({
                         Check Compatibility.
                     </h1>
                     <p className="text-lg md:text-xl text-slate-700 leading-relaxed max-w-2xl mx-auto mb-8">
-                        Someone shared their chart with you. Enter your birth
-                        data to see how your charts interact.
+                        {userName && userName !== "Anonymous" ? (
+                            <>
+                                <span className="font-semibold text-slate-900">
+                                    {userName}
+                                </span>{" "}
+                                shared their chart with you. Enter your birth
+                                data to see how your charts interact.
+                            </>
+                        ) : (
+                            <>
+                                Someone shared their chart with you. Enter your
+                                birth data to see how your charts interact.
+                            </>
+                        )}
                     </p>
                 </div>
 
@@ -210,6 +292,12 @@ export default function CompatibilityForm({
                         className="text-white p-8 md:p-10 border-2 border-slate-900"
                         style={getElementBgStyle(report.identity?.element)}
                     >
+                        {/* User Name - Show ownership when not Anonymous */}
+                        {userName && userName !== "Anonymous" && (
+                            <div className="text-xs font-medium text-white/60 mb-2">
+                                {userName}&apos;s Chart
+                            </div>
+                        )}
                         <div className="text-xs font-bold uppercase tracking-widest text-white/70 mb-3 flex items-center gap-2">
                             {getElementEmoji(report.identity?.element) && (
                                 <span className="text-sm">
@@ -374,6 +462,212 @@ export default function CompatibilityForm({
                                     </Select.Popover>
                                     <FieldError className="text-xs text-red-500 mt-2 font-serif italic" />
                                 </Select>
+                            </div>
+                        </div>
+
+                        {/* City Fields */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                            <div className="text-left group">
+                                <ComboBox
+                                    id="birthCity"
+                                    name="birthCity"
+                                    isRequired
+                                    allowsCustomValue
+                                    onSelectionChange={(key) => {
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            birthCity: key ? String(key) : "",
+                                        }));
+                                    }}
+                                    inputValue={formData.birthCity}
+                                    onInputChange={(value) => {
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            birthCity: value,
+                                        }));
+                                        // Filter cities based on input
+                                        if (value.length > 0) {
+                                            const results =
+                                                cityTimezones.findFromCityStateProvince(
+                                                    value
+                                                );
+                                            const suggestions = results
+                                                .slice(0, 30)
+                                                .map((city, index) => {
+                                                    // For US cities with state_ansi, use "City, State"
+                                                    // For other cities, use "City, Country"
+                                                    let label: string;
+                                                    if (city.state_ansi) {
+                                                        label = `${city.city}, ${city.state_ansi}`;
+                                                    } else {
+                                                        label = `${city.city}, ${city.country}`;
+                                                    }
+                                                    return {
+                                                        id: `${city.city}-${
+                                                            city.province ||
+                                                            city.country
+                                                        }-${index}`,
+                                                        label,
+                                                        timezone: city.timezone,
+                                                    };
+                                                });
+                                            setBirthCitySuggestions(
+                                                suggestions
+                                            );
+                                        } else {
+                                            setBirthCitySuggestions([]);
+                                        }
+                                    }}
+                                    className="w-full [&>div]:shadow-none [&>div]:!shadow-none"
+                                >
+                                    <Label
+                                        htmlFor="birthCity"
+                                        className="block text-[10px] tracking-widest font-bold text-slate-400 mb-2 uppercase"
+                                    >
+                                        City of Birth
+                                    </Label>
+                                    <ComboBox.InputGroup>
+                                        <Input
+                                            className="w-full bg-transparent border-b border-slate-300 px-0 py-2 text-xl sm:text-2xl font-serif text-slate-900 focus:border-slate-900 focus:outline-none transition-colors rounded-none shadow-none"
+                                            placeholder="e.g., Seoul, South Korea"
+                                        />
+                                        <ComboBox.Trigger />
+                                    </ComboBox.InputGroup>
+                                    <ComboBox.Popover className="bg-white/90 backdrop-blur-md border border-slate-100 rounded-none">
+                                        <ListBox className="p-0">
+                                            {birthCitySuggestions.length > 0 ? (
+                                                birthCitySuggestions.map(
+                                                    (city) => (
+                                                        <ListBox.Item
+                                                            key={city.id}
+                                                            id={city.label}
+                                                            textValue={
+                                                                city.label
+                                                            }
+                                                            className="px-6 py-4 hover:bg-slate-50 font-serif text-slate-700 cursor-pointer outline-none"
+                                                        >
+                                                            {city.label}
+                                                            <ListBox.ItemIndicator />
+                                                        </ListBox.Item>
+                                                    )
+                                                )
+                                            ) : (
+                                                <ListBox.Item
+                                                    id="empty"
+                                                    textValue="Start typing to search cities..."
+                                                    className="px-6 py-4 text-sm text-slate-500 font-serif italic cursor-default"
+                                                    isDisabled
+                                                >
+                                                    Start typing to search
+                                                    cities...
+                                                </ListBox.Item>
+                                            )}
+                                        </ListBox>
+                                    </ComboBox.Popover>
+                                    <FieldError className="text-xs text-red-500 mt-2 font-serif italic" />
+                                </ComboBox>
+                            </div>
+
+                            <div className="text-left group">
+                                <ComboBox
+                                    id="currentCity"
+                                    name="currentCity"
+                                    isRequired
+                                    allowsCustomValue
+                                    onSelectionChange={(key) => {
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            currentCity: key ? String(key) : "",
+                                        }));
+                                    }}
+                                    inputValue={formData.currentCity}
+                                    onInputChange={(value) => {
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            currentCity: value,
+                                        }));
+                                        // Filter cities based on input
+                                        if (value.length > 0) {
+                                            const results =
+                                                cityTimezones.findFromCityStateProvince(
+                                                    value
+                                                );
+                                            const suggestions = results
+                                                .slice(0, 30)
+                                                .map((city, index) => {
+                                                    // For US cities with state_ansi, use "City, State"
+                                                    // For other cities, use "City, Country"
+                                                    let label: string;
+                                                    if (city.state_ansi) {
+                                                        label = `${city.city}, ${city.state_ansi}`;
+                                                    } else {
+                                                        label = `${city.city}, ${city.country}`;
+                                                    }
+                                                    return {
+                                                        id: `${city.city}-${
+                                                            city.province ||
+                                                            city.country
+                                                        }-${index}`,
+                                                        label,
+                                                        timezone: city.timezone,
+                                                    };
+                                                });
+                                            setCurrentCitySuggestions(
+                                                suggestions
+                                            );
+                                        } else {
+                                            setCurrentCitySuggestions([]);
+                                        }
+                                    }}
+                                    className="w-full [&>div]:shadow-none [&>div]:!shadow-none"
+                                >
+                                    <Label
+                                        htmlFor="currentCity"
+                                        className="block text-[10px] tracking-widest font-bold text-slate-400 mb-2 uppercase"
+                                    >
+                                        Current City
+                                    </Label>
+                                    <ComboBox.InputGroup>
+                                        <Input
+                                            className="w-full bg-transparent border-b border-slate-300 px-0 py-2 text-xl sm:text-2xl font-serif text-slate-900 focus:border-slate-900 focus:outline-none transition-colors rounded-none shadow-none"
+                                            placeholder="e.g., New York, NY"
+                                        />
+                                        <ComboBox.Trigger />
+                                    </ComboBox.InputGroup>
+                                    <ComboBox.Popover className="bg-white/90 backdrop-blur-md border border-slate-100 rounded-none">
+                                        <ListBox className="p-0">
+                                            {currentCitySuggestions.length >
+                                            0 ? (
+                                                currentCitySuggestions.map(
+                                                    (city) => (
+                                                        <ListBox.Item
+                                                            key={city.id}
+                                                            id={city.label}
+                                                            textValue={
+                                                                city.label
+                                                            }
+                                                            className="px-6 py-4 hover:bg-slate-50 font-serif text-slate-700 cursor-pointer outline-none"
+                                                        >
+                                                            {city.label}
+                                                            <ListBox.ItemIndicator />
+                                                        </ListBox.Item>
+                                                    )
+                                                )
+                                            ) : (
+                                                <ListBox.Item
+                                                    id="empty"
+                                                    textValue="Start typing to search cities..."
+                                                    className="px-6 py-4 text-sm text-slate-500 font-serif italic cursor-default"
+                                                    isDisabled
+                                                >
+                                                    Start typing to search
+                                                    cities...
+                                                </ListBox.Item>
+                                            )}
+                                        </ListBox>
+                                    </ComboBox.Popover>
+                                    <FieldError className="text-xs text-red-500 mt-2 font-serif italic" />
+                                </ComboBox>
                             </div>
                         </div>
 
